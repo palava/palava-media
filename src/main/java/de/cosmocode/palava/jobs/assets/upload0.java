@@ -38,10 +38,10 @@ import de.cosmocode.palava.services.media.Asset;
 
 public class upload0 implements Job {
 
-	@Override
-	public void process(Call request, Response response, HttpSession session,
-			Server server, Map<String, Object> caddy) throws ConnectionLostException, Exception {
-		
+    @Override
+    public void process(Call request, Response response, HttpSession session,
+            Server server, Map<String, Object> caddy) throws ConnectionLostException, Exception {
+        
         DataCall req = (DataCall) request;
         final Map<String, String> map = req.getArguments();
 
@@ -59,19 +59,19 @@ public class upload0 implements Job {
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         Date date = null;
         
-		try {
-			date = format.parse(exDate);
-		} catch (Exception e) {
-			//TODO handle format exception
-		}
-		
+        try {
+            date = format.parse(exDate);
+        } catch (Exception e) {
+            //TODO handle format exception
+        }
+        
         asset.setExpirationDate(date);
         asset.fillMetaData(map);
                 
         caddy.put("asset", asset );
         caddy.put("mimetype", new MimeType(mimetype) );
 
-		response.setContent( PhpContent.OK );
-	}
+        response.setContent( PhpContent.OK );
+    }
 
 }

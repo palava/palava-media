@@ -40,10 +40,10 @@ import de.cosmocode.palava.services.media.ImageStore;
 
 public class getDirectoryLong extends HibJob {
 
-	@Override
-	public void process(Call req, Response response, HttpSession session, Server server, 
-			Map<String, Object> caddy, org.hibernate.Session hibSession) throws Exception {
-		
+    @Override
+    public void process(Call req, Response response, HttpSession session, Server server, 
+            Map<String, Object> caddy, org.hibernate.Session hibSession) throws Exception {
+        
         ImageStore store = server.getServiceManager().lookup(ImageStore.class);
         if ( hibSession == null ) hibSession = createHibSession(server,caddy);
 
@@ -64,16 +64,16 @@ public class getDirectoryLong extends HibJob {
         List<Asset> assets = directory.getAssets();
         
         json.array();
-        for(Asset asset : assets) {        	
-        	json.
-        		object();
-		        	asset.encodeJSON(json);       	
-		        	json.key("directories").
-	    			value(manager.getDirectoryIdsForAsset(asset.getId())).
-    			endObject();        	
+        for(Asset asset : assets) {            
+            json.
+                object();
+                    asset.encodeJSON(json);           
+                    json.key("directories").
+                    value(manager.getDirectoryIdsForAsset(asset.getId())).
+                endObject();            
         }
         json.endArray();
         
         response.setContent(new JsonContent(json));
-	}
+    }
 }

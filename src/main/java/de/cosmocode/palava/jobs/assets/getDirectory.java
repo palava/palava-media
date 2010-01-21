@@ -37,11 +37,11 @@ import de.cosmocode.palava.services.media.ImageStore;
 
 public class getDirectory extends HibJob {
 
-	@Override
-	public void process(Call req, Response resp, HttpSession session,
-			Server server, Map<String, Object> caddy,
-			org.hibernate.Session hibSession) throws Exception {
-		
+    @Override
+    public void process(Call req, Response resp, HttpSession session,
+            Server server, Map<String, Object> caddy,
+            org.hibernate.Session hibSession) throws Exception {
+        
         ImageStore ist = server.getServiceManager().lookup(ImageStore.class);
         if ( hibSession == null ) hibSession = createHibSession(server,caddy);
 
@@ -58,6 +58,6 @@ public class getDirectory extends HibJob {
 
         resp.setContent( new JsonContent(dir) ) ;
         
-	}
+    }
 
 }

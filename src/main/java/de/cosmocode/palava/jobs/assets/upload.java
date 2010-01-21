@@ -36,11 +36,11 @@ import de.cosmocode.palava.services.media.ImageStore;
 
 public class upload extends HibJob {
 
-	@Override
-	public void process(Call request, Response response, HttpSession session,
-			Server server, Map<String, Object> caddy, org.hibernate.Session hibSession)
-			throws ConnectionLostException, Exception {
-		
+    @Override
+    public void process(Call request, Response response, HttpSession session,
+            Server server, Map<String, Object> caddy, org.hibernate.Session hibSession)
+            throws ConnectionLostException, Exception {
+        
         ImageStore ist = server.getServiceManager().lookup(ImageStore.class);
 
         if ( hibSession == null ) hibSession = createHibSession(server,caddy);
@@ -58,7 +58,7 @@ public class upload extends HibJob {
 
         im.createAsset(asset);
 
-		response.setContent( new PhpContent(asset.getId()) );
-	}
+        response.setContent( new PhpContent(asset.getId()) );
+    }
 
 }

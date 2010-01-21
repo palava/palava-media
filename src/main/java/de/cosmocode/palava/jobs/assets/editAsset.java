@@ -39,12 +39,12 @@ import de.cosmocode.palava.services.media.ImageStore;
 
 public class editAsset extends HibJob {
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void process(Call req, Response resp, HttpSession session,
-			Server server, Map<String, Object> caddy,
-			org.hibernate.Session hibSession) throws Exception {
-		
+    @SuppressWarnings("unchecked")
+    @Override
+    public void process(Call req, Response resp, HttpSession session,
+            Server server, Map<String, Object> caddy,
+            org.hibernate.Session hibSession) throws Exception {
+        
         ImageStore as = server.getServiceManager().lookup(ImageStore.class);
         if ( hibSession == null ) hibSession = createHibSession(server,caddy);
 
@@ -80,30 +80,30 @@ public class editAsset extends HibJob {
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
             Date date = null;
             
-    		try {
+            try {
                 format.setLenient(false);
                 if (!exDate.equals("")) date = format.parse(exDate);
-    		} catch (Exception e) {
-    			ur.addError(UpdateResult.ERR_FORMAT, "expirationDate");
-    		}
-    	
-        	asset.setExpirationDate(date);
-    		asset.setExpiresNever(map.containsKey("expiresNever") && map.get("expiresNever").equals("true"));
-    		map.remove("expiresNever");
-    		
-    		asset.fillMetaData(map);
+            } catch (Exception e) {
+                ur.addError(UpdateResult.ERR_FORMAT, "expirationDate");
+            }
+        
+            asset.setExpirationDate(date);
+            asset.setExpiresNever(map.containsKey("expiresNever") && map.get("expiresNever").equals("true"));
+            map.remove("expiresNever");
+            
+            asset.fillMetaData(map);
 
-    		if (ur.isError()) {
-    			ur.setResult(asset);
-    			resp.setContent(new PhpContent(ur));
-    			return;
-    		}
-    		
+            if (ur.isError()) {
+                ur.setResult(asset);
+                resp.setContent(new PhpContent(ur));
+                return;
+            }
+            
             am.updateAsset(asset);
             ur.setResult(asset);
         } catch ( Exception e ) {
             ur.setException(e);
         }
-		resp.setContent(new PhpContent(ur));
-	}
+        resp.setContent(new PhpContent(ur));
+    }
 }

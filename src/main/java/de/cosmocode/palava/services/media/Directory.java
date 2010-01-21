@@ -52,9 +52,9 @@ import de.cosmocode.palava.KeyValueState;
  *
  */
 @NamedQueries({
-	@NamedQuery(
-		name="directoriesByAssetId",
-		query="select d.id, d.name from Directory d inner join d.assets a where (a.id = :assetId)")
+    @NamedQuery(
+        name="directoriesByAssetId",
+        query="select d.id, d.name from Directory d inner join d.assets a where (a.id = :assetId)")
 })
 
 @Entity
@@ -62,42 +62,42 @@ public class Directory implements JSONEncoder, Convertible, Iterable<Asset> {
 
     @Id
     @GeneratedValue(generator = "entity_id_gen", strategy = GenerationType.TABLE)
-	private Long id;
+    private Long id;
 
     String name;
 
     @ManyToMany (fetch=FetchType.LAZY)
     @JoinColumn (unique=true)
     @IndexColumn (name="dirIdx", nullable=false, base=0)
-	List<Asset> assets = new ArrayList<Asset>();
-	
-	public List<Asset> getAssets() {
-		return assets;
-	}
-	public void setAssets(List<Asset> assets) {
-		this.assets = assets;
-	}
-	public void addAsset(Asset asset) {
-		if (this.assets == null)
-			this.assets = new ArrayList<Asset>();
+    List<Asset> assets = new ArrayList<Asset>();
+    
+    public List<Asset> getAssets() {
+        return assets;
+    }
+    public void setAssets(List<Asset> assets) {
+        this.assets = assets;
+    }
+    public void addAsset(Asset asset) {
+        if (this.assets == null)
+            this.assets = new ArrayList<Asset>();
         
         // only add the asset to this directory if it doesn't already contain it
         if (! this.assets.contains (asset))
-		    this.assets.add(asset);
-	}
-	public boolean removeAsset(Asset asset) {
-		if (this.assets != null) {
-			return this.assets.remove(asset);
+            this.assets.add(asset);
+    }
+    public boolean removeAsset(Asset asset) {
+        if (this.assets != null) {
+            return this.assets.remove(asset);
         }
         return false;
 
-	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
     public void setName( String name ) {
         this.name = name;
     }
@@ -111,31 +111,31 @@ public class Directory implements JSONEncoder, Convertible, Iterable<Asset> {
 
     public void encodeJSON(JSONConstructor json) throws JSONException 
     {
-        json.array();        	
+        json.array();            
         for(Asset asset : assets) {
-        	json.object();
+            json.object();
             asset.encodeJSON(json);
             json.endObject();
         }
         json.endArray();
     }
-	
+    
     public void convert( StringBuffer buf, ContentConverter converter ) throws ConversionException
     {
         converter.convertKeyValue (buf, "name", name, KeyValueState.START);
         converter.convertKeyValue (buf, "assets", assets, KeyValueState.LAST);
     }
-	public int getSize() {
-		return assets != null ? assets.size() : 0;
-	}
-	
-	public boolean isEmpty() {
-		return getSize() == 0;
-	}
-	
-	@Override
-	public Iterator<Asset> iterator() {
-		return assets == null ? new LinkedList<Asset>().iterator() : assets.iterator();
-	}
-	
+    public int getSize() {
+        return assets != null ? assets.size() : 0;
+    }
+    
+    public boolean isEmpty() {
+        return getSize() == 0;
+    }
+    
+    @Override
+    public Iterator<Asset> iterator() {
+        return assets == null ? new LinkedList<Asset>().iterator() : assets.iterator();
+    }
+    
 }

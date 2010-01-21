@@ -88,7 +88,7 @@ public class AssetManager {
         Transaction tx = session.beginTransaction();
 
         try {
-        	asset.setModificationDate(new Date());
+            asset.setModificationDate(new Date());
             session.save(asset);
             palava.log(session, asset.getId(), Asset.class, Operation.UPDATE, null, asset);
             session.flush();
@@ -180,22 +180,22 @@ public class AssetManager {
      * the asset with the given assetID
      * @author schoenborn@cosmocode.de
      */
-	@SuppressWarnings("unchecked")
-	public Map<Long, String> getDirectoryIdsForAsset(Long assetId) {
-    	
-    	final Map<Long, String> map = new HashMap<Long, String>();
-    	
-    	final Query query = session.
-    		getNamedQuery("directoriesByAssetId").
-    		setLong("assetId", assetId);
-    	
-    	final List<Object[]> list = query.list();
-    	
-    	for (final Object[] array : list) {
-			map.put((Long) array[0], (String) array[1]);
-    	}
-    	
-    	return map;
+    @SuppressWarnings("unchecked")
+    public Map<Long, String> getDirectoryIdsForAsset(Long assetId) {
+        
+        final Map<Long, String> map = new HashMap<Long, String>();
+        
+        final Query query = session.
+            getNamedQuery("directoriesByAssetId").
+            setLong("assetId", assetId);
+        
+        final List<Object[]> list = query.list();
+        
+        for (final Object[] array : list) {
+            map.put((Long) array[0], (String) array[1]);
+        }
+        
+        return map;
     }
     
     public void removeDirectory ( Directory dir ) {
@@ -233,7 +233,7 @@ public class AssetManager {
         Directory directory = (Directory) session.load(Directory.class, directoryId);
 
         if (directory == null) 
-        	throw new NullPointerException("Directory not found");
+            throw new NullPointerException("Directory not found");
 
         Asset asset = (Asset) session.get(Asset.class, assetId);
         if (asset == null)  throw new NullPointerException ("Asset not found");  //createAsset( asset );
