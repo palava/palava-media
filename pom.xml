@@ -8,4 +8,11 @@
   <groupId>de.cosmocode.palava.services</groupId>
   <artifactId>palava-media</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+  	<dependency>
+  		<groupId>de.cosmocode.palava.services</groupId>
+  		<artifactId>palava-persistence</artifactId>
+  		<version>1.4-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>
