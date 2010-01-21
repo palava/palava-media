@@ -26,8 +26,8 @@ import org.hibernate.Session;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 
-import de.cosmocode.palava.components.cstore.ContentStore;
 import de.cosmocode.palava.core.service.lifecycle.Initializable;
+import de.cosmocode.palava.services.store.ContentStore;
 
 public class ImageStore implements Initializable {
 

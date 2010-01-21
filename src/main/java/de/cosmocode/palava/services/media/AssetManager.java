@@ -34,11 +34,9 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.cosmocode.palava.components.cstore.ContentStore;
-import de.cosmocode.palava.components.logging.Operation;
-import de.cosmocode.palava.components.logging.PalavaLogger;
 import de.cosmocode.palava.core.protocol.content.Content;
 import de.cosmocode.palava.core.protocol.content.StreamContent;
+import de.cosmocode.palava.services.store.ContentStore;
 
 public class AssetManager {
     
@@ -46,7 +44,6 @@ public class AssetManager {
     private final Session session;
     
     private static final Logger log = LoggerFactory.getLogger(AssetManager.class);
-    private static final PalavaLogger palava = PalavaLogger.getLogger();
 
     public AssetManager(ContentStore store, Session session) {
         this.store = store;
@@ -90,7 +87,6 @@ public class AssetManager {
         try {
             asset.setModificationDate(new Date());
             session.save(asset);
-            palava.log(session, asset.getId(), Asset.class, Operation.UPDATE, null, asset);
             session.flush();
             tx.commit();
         } catch ( Exception e) {
@@ -111,7 +107,6 @@ public class AssetManager {
         try {
             asset.setStoreKey(key);
             session.save(asset);            
-            palava.log(session, asset.getId(), Asset.class, Operation.INSERT, null, asset);
             session.flush();
             tx.commit();
         } catch ( Exception e) {
@@ -135,7 +130,6 @@ public class AssetManager {
             if ( ! directory.removeAsset(asset) )
                 return Boolean.FALSE;
             session.saveOrUpdate (directory);
-            palava.log(session, directory.getId(), Directory.class, Operation.UPDATE, null, directory);
         }
 
         Transaction tx = session.beginTransaction();
@@ -154,18 +148,15 @@ public class AssetManager {
 
     public void removeAsset( Asset asset ) {
         session.delete(asset);
-        palava.log(session, asset.getId(), Asset.class, Operation.DELETE);
         store.remove(asset.getStoreKey());
     }
 
     public void createDirectory( Directory dir ) throws Exception {
         session.save(dir);
-        palava.log(session, dir.getId(), Directory.class, Operation.INSERT, null, dir);
     }
 
     public void updateDirectory( Directory dir ) throws Exception {
         session.update(dir);
-        palava.log(session, dir.getId(), Directory.class, Operation.UPDATE, null, dir);
     }
 
     public Directory getDirectory( Long id ) throws Exception {
@@ -217,7 +208,6 @@ public class AssetManager {
 
         try {
             session.save(directory);
-            palava.log(session, directoryId, Directory.class, Operation.UPDATE, "removing asset " + assetId, directory);
             session.flush();
             tx.commit();
         } catch ( Exception e) {
@@ -244,7 +234,6 @@ public class AssetManager {
 
         try {
             session.saveOrUpdate(directory);
-            palava.log(session, directoryId, Directory.class, Operation.UPDATE, "adding asset " + assetId, directory);
             session.flush();
             tx.commit();
         } catch (HibernateException e) {
@@ -277,9 +266,7 @@ public class AssetManager {
         try {
             session.saveOrUpdate(directory);
             if (newDir) {
-                palava.log(session, directoryId, Directory.class, Operation.INSERT, null, directory);
             }
-            palava.log(session, directoryId, Directory.class, Operation.UPDATE, "adding asset " + assetId, directory);
             session.flush();
             tx.commit();
         } catch (HibernateException e) {
@@ -314,19 +301,6 @@ public class AssetManager {
         final Transaction tx = session.beginTransaction();
         try {
             session.save(directory);
-            
-            for (Long assetID : assetIds) {
-                palava.log(session, 
-                    directory.getId(), Directory.class, 
-                    Operation.UPDATE, 
-                    "adding asset " + assetID, 
-                    directory);
-            }
-            palava.log(session, 
-                directory.getId(), Directory.class, 
-                Operation.UPDATE, 
-                null, 
-                directory);
             session.flush();
             tx.commit();
         } catch (HibernateException e) {
@@ -367,7 +341,6 @@ public class AssetManager {
         final Transaction tx = session.beginTransaction();
         try {
             session.save(directory);
-            palava.log(session, directory.getId(), Directory.class, Operation.INSERT, null, directory);
             session.flush();
             tx.commit();
         } catch (HibernateException e) {
