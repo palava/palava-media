@@ -32,12 +32,12 @@ import de.cosmocode.palava.core.protocol.Response;
 import de.cosmocode.palava.core.protocol.content.PhpContent;
 import de.cosmocode.palava.core.server.Server;
 import de.cosmocode.palava.core.session.HttpSession;
-import de.cosmocode.palava.jobs.hib.HibJob;
 import de.cosmocode.palava.services.media.Asset;
 import de.cosmocode.palava.services.media.ImageManager;
 import de.cosmocode.palava.services.media.ImageStore;
+import de.cosmocode.palava.services.persistence.hibernate.HibernateJob;
 
-public class editAsset extends HibJob {
+public class editAsset extends HibernateJob {
 
     @SuppressWarnings("unchecked")
     @Override
@@ -46,10 +46,9 @@ public class editAsset extends HibJob {
             org.hibernate.Session hibSession) throws Exception {
         
         ImageStore as = server.getServiceManager().lookup(ImageStore.class);
-        if ( hibSession == null ) hibSession = createHibSession(server,caddy);
 
         DataCall request = (DataCall) req;
-        Map<String,String> map = request.getArgs();
+        Map<String, String> map = request.getStringedArguments();
 
         String assetId = map.get("assetId");
         if ( assetId == null ) throw new MissingArgumentException(this,"assetId");

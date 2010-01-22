@@ -32,23 +32,22 @@ import de.cosmocode.palava.core.protocol.Response;
 import de.cosmocode.palava.core.protocol.content.JsonContent;
 import de.cosmocode.palava.core.server.Server;
 import de.cosmocode.palava.core.session.HttpSession;
-import de.cosmocode.palava.jobs.hib.HibJob;
 import de.cosmocode.palava.services.media.Asset;
 import de.cosmocode.palava.services.media.Directory;
 import de.cosmocode.palava.services.media.ImageManager;
 import de.cosmocode.palava.services.media.ImageStore;
+import de.cosmocode.palava.services.persistence.hibernate.HibernateJob;
 
-public class getDirectoryLong extends HibJob {
+public class getDirectoryLong extends HibernateJob {
 
     @Override
     public void process(Call req, Response response, HttpSession session, Server server, 
             Map<String, Object> caddy, org.hibernate.Session hibSession) throws Exception {
         
         ImageStore store = server.getServiceManager().lookup(ImageStore.class);
-        if ( hibSession == null ) hibSession = createHibSession(server,caddy);
 
         DataCall request = (DataCall) req;
-        final Map<String, String> map = request.getArguments();
+        final Map<String, String> map = request.getStringedArguments();
 
         String dirID = map.get("id");
         if(dirID == null) throw new MissingArgumentException(this, "id");

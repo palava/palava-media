@@ -28,11 +28,11 @@ import de.cosmocode.palava.core.protocol.Response;
 import de.cosmocode.palava.core.protocol.content.PhpContent;
 import de.cosmocode.palava.core.server.Server;
 import de.cosmocode.palava.core.session.HttpSession;
-import de.cosmocode.palava.jobs.hib.HibJob;
 import de.cosmocode.palava.services.media.ImageManager;
 import de.cosmocode.palava.services.media.ImageStore;
+import de.cosmocode.palava.services.persistence.hibernate.HibernateJob;
 
-public class addDirectory extends HibJob {
+public class addDirectory extends HibernateJob {
 
     @Override
     public void process(Call req, Response resp, HttpSession session,
@@ -40,10 +40,9 @@ public class addDirectory extends HibJob {
             org.hibernate.Session hibSession) throws Exception {
         
         ImageStore ist = server.getServiceManager().lookup(ImageStore.class);
-        if ( hibSession == null ) hibSession = createHibSession(server,caddy);
 
         DataCall request = (DataCall) req;
-        final Map<String, String> map = request.getArguments();
+        final Map<String, String> map = request.getStringedArguments();
 
         String dirId = map.get("id");
         String name = map.get("name");

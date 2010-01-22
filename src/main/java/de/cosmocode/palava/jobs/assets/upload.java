@@ -29,12 +29,12 @@ import de.cosmocode.palava.core.protocol.content.PhpContent;
 import de.cosmocode.palava.core.protocol.content.StreamContent;
 import de.cosmocode.palava.core.server.Server;
 import de.cosmocode.palava.core.session.HttpSession;
-import de.cosmocode.palava.jobs.hib.HibJob;
 import de.cosmocode.palava.services.media.Asset;
 import de.cosmocode.palava.services.media.ImageManager;
 import de.cosmocode.palava.services.media.ImageStore;
+import de.cosmocode.palava.services.persistence.hibernate.HibernateJob;
 
-public class upload extends HibJob {
+public class upload extends HibernateJob {
 
     @Override
     public void process(Call request, Response response, HttpSession session,
@@ -43,7 +43,6 @@ public class upload extends HibJob {
         
         ImageStore ist = server.getServiceManager().lookup(ImageStore.class);
 
-        if ( hibSession == null ) hibSession = createHibSession(server,caddy);
 
         Asset asset = (Asset) caddy.get("asset");
         if ( asset == null ) throw new NullPointerException("asset == null");

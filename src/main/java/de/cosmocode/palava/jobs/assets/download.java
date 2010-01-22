@@ -29,12 +29,12 @@ import de.cosmocode.palava.core.protocol.Response;
 import de.cosmocode.palava.core.protocol.content.PhpContent;
 import de.cosmocode.palava.core.server.Server;
 import de.cosmocode.palava.core.session.HttpSession;
-import de.cosmocode.palava.jobs.hib.HibJob;
 import de.cosmocode.palava.services.media.Asset;
 import de.cosmocode.palava.services.media.ImageManager;
 import de.cosmocode.palava.services.media.ImageStore;
+import de.cosmocode.palava.services.persistence.hibernate.HibernateJob;
 
-public class download extends HibJob {
+public class download extends HibernateJob {
 
     @Override
     public void process(Call request, Response response, HttpSession session,
@@ -43,10 +43,8 @@ public class download extends HibJob {
         
         ImageStore ist = server.getServiceManager().lookup(ImageStore.class);
 
-        if ( hibSession == null ) hibSession = createHibSession(server,caddy);
-
         DataCall req = (DataCall) request;
-        final Map<String, String> map = req.getArguments();
+        final Map<String, String> map = req.getStringedArguments();
 
         String filterName = map.get("filter");
         Long id = null;

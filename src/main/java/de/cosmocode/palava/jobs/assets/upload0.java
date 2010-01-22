@@ -43,7 +43,7 @@ public class upload0 implements Job {
             Server server, Map<String, Object> caddy) throws ConnectionLostException, Exception {
         
         DataCall req = (DataCall) request;
-        final Map<String, String> map = req.getArguments();
+        final Map<String, String> map = req.getStringedArguments();
 
         String mimetype = map.get("mimetype");
         if ( mimetype == null ) throw new MissingArgumentException(this,"mimetype");
