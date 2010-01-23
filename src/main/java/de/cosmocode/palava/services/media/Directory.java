@@ -41,10 +41,10 @@ import org.json.JSONException;
 import org.json.extension.JSONConstructor;
 import org.json.extension.JSONEncoder;
 
-import de.cosmocode.palava.ContentConverter;
-import de.cosmocode.palava.ConversionException;
-import de.cosmocode.palava.Convertible;
-import de.cosmocode.palava.KeyValueState;
+import de.cosmocode.palava.legacy.ContentConverter;
+import de.cosmocode.palava.legacy.ConversionException;
+import de.cosmocode.palava.legacy.Convertible;
+import de.cosmocode.palava.legacy.KeyValueState;
 
 /** a directory is just a collection/list of Asset Ids.
  * Asset ids may be contained in different directories at the same time.

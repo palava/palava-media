@@ -36,12 +36,12 @@ import org.json.JSONObject;
 import org.json.extension.JSONConstructor;
 import org.json.extension.JSONEncoder;
 
-import de.cosmocode.palava.ContentConverter;
-import de.cosmocode.palava.ConversionException;
-import de.cosmocode.palava.Convertible;
-import de.cosmocode.palava.KeyValueState;
-import de.cosmocode.palava.MimeType;
+import de.cosmocode.palava.core.protocol.content.MimeType;
 import de.cosmocode.palava.core.protocol.content.StreamContent;
+import de.cosmocode.palava.legacy.ContentConverter;
+import de.cosmocode.palava.legacy.ConversionException;
+import de.cosmocode.palava.legacy.Convertible;
+import de.cosmocode.palava.legacy.KeyValueState;
 
 @Entity
 public class Asset implements JSONEncoder, Convertible {

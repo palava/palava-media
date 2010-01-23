@@ -23,8 +23,8 @@ import java.util.Map;
 
 import org.json.extension.JSONEncoder;
 
-import de.cosmocode.palava.MissingArgumentException;
 import de.cosmocode.palava.core.call.Call;
+import de.cosmocode.palava.core.call.MissingArgumentException;
 import de.cosmocode.palava.core.protocol.DataCall;
 import de.cosmocode.palava.core.protocol.Response;
 import de.cosmocode.palava.core.protocol.content.JsonContent;
