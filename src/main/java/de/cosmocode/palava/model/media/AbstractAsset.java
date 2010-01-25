@@ -29,6 +29,7 @@ import com.google.common.collect.Maps;
 
 import de.cosmocode.commons.TrimMode;
 import de.cosmocode.json.JSONRenderer;
+import de.cosmocode.json.RenderLevel;
 import de.cosmocode.palava.model.base.AbstractEntity;
 
 @MappedSuperclass
@@ -104,15 +105,23 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
     
     @Override
     public JSONRenderer renderAsMap(JSONRenderer renderer) {
-        return
-            super.renderAsMap(renderer).
-            key("name").value(getName()).
-            key("title").value(getTitle()).
-            key("description").value(getDescription()).
-            key("metaData").value(getMetaData()).
-            key("expiresAt").value(getExpiresAt()).
-            key("isExpirable").value(isExpirable()).
-            key("isExpired").value(isExpired());
+        super.renderAsMap(renderer);
+        
+        if (renderer.eq(RenderLevel.TINY)) {
+            renderer.
+                key("name").value(getName()).
+                key("title").value(getTitle());
+        }
+        if (renderer.eq(RenderLevel.MEDIUM)) {
+            renderer.
+                key("description").value(getDescription()).
+                key("metaData").value(getMetaData()).
+                key("expiresAt").value(getExpiresAt()).
+                key("isExpirable").value(isExpirable()).
+                key("isExpired").value(isExpired());
+        }
+        
+        return renderer;
     }
     
 }

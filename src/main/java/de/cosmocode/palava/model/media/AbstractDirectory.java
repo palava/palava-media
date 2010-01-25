@@ -21,8 +21,14 @@ package de.cosmocode.palava.model.media;
 
 import de.cosmocode.json.JSONRenderer;
 
+/**
+ * 
+ *
+ * @author Willi Schoenborn
+ */
 public abstract class AbstractDirectory implements DirectoryBase {
 
+    // TODO add level decision
     @Override
     public JSONRenderer renderAsMap(JSONRenderer renderer) {
         return renderer.
