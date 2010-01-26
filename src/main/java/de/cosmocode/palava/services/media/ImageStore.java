@@ -23,40 +23,17 @@ import java.io.File;
 
 import org.hibernate.Session;
 
-import com.google.common.base.Preconditions;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 import de.cosmocode.palava.core.service.Service;
-import de.cosmocode.palava.core.service.lifecycle.Initializable;
-import de.cosmocode.palava.services.store.ContentStore;
 
-public class ImageStore implements Service, Initializable {
-
-    private final ContentStore store;
+/**
+ * 
+ *
+ * @author Willi Schoenborn
+ */
+public interface ImageStore extends Service {
     
-    private final File filterDirectory;
+    File getFile(String storeKey, String filterName);
     
-    @Inject
-    public ImageStore(
-        @ImageContentStore ContentStore store,
-        @Named("imagestore.filterDirectory") File filterDirectory) {
-        this.store = Preconditions.checkNotNull(store, "Store");
-        this.filterDirectory = Preconditions.checkNotNull(filterDirectory);
-    }
-
-    public File getFile(String storeKey, String filterName){
-        return new File(filterDirectory, filterName + "/" + storeKey);
-    }
+    ImageManager createImageManager(Session session);
     
-    public ImageManager createImageManager(Session session){
-        return new ImageManager(this, store, session);
-    }
-    
-    @Override
-    public void initialize() {
-        filterDirectory.mkdirs();
-    }
-
-
 }
