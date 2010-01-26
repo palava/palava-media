@@ -22,8 +22,8 @@ package de.cosmocode.palava.jobs.assets;
 import java.util.Map;
 
 import de.cosmocode.palava.core.call.Call;
+import de.cosmocode.palava.core.command.Response;
 import de.cosmocode.palava.core.protocol.ConnectionLostException;
-import de.cosmocode.palava.core.protocol.Response;
 import de.cosmocode.palava.core.protocol.content.MimeType;
 import de.cosmocode.palava.core.protocol.content.PhpContent;
 import de.cosmocode.palava.core.protocol.content.StreamContent;
