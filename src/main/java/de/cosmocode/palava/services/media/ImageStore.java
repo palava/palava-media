@@ -25,18 +25,22 @@ import org.hibernate.Session;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
+import de.cosmocode.palava.core.service.Service;
 import de.cosmocode.palava.core.service.lifecycle.Initializable;
 import de.cosmocode.palava.services.store.ContentStore;
 
-public class ImageStore implements Initializable {
+public class ImageStore implements Service, Initializable {
 
     private final ContentStore store;
     
     private final File filterDirectory;
     
     @Inject
-    public ImageStore(@ImageContentStore ContentStore store, File filterDirectory) {
+    public ImageStore(
+        @ImageContentStore ContentStore store,
+        @Named("imagestore.filterDirectory") File filterDirectory) {
         this.store = Preconditions.checkNotNull(store, "Store");
         this.filterDirectory = Preconditions.checkNotNull(filterDirectory);
     }
