@@ -1,6 +1,6 @@
 /**
  * palava - a java-php-bridge
- * Copyright (C) 2007  CosmoCode GmbH
+ * Copyright (C) 2007-2010  CosmoCode GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,12 +36,12 @@ import org.json.JSONObject;
 import org.json.extension.JSONConstructor;
 import org.json.extension.JSONEncoder;
 
-import de.cosmocode.palava.core.bridge.simple.content.MimeType;
-import de.cosmocode.palava.core.bridge.simple.content.StreamContent;
-import de.cosmocode.palava.legacy.ContentConverter;
-import de.cosmocode.palava.legacy.ConversionException;
-import de.cosmocode.palava.legacy.Convertible;
-import de.cosmocode.palava.legacy.KeyValueState;
+import de.cosmocode.palava.bridge.MimeType;
+import de.cosmocode.palava.bridge.content.ContentConverter;
+import de.cosmocode.palava.bridge.content.ConversionException;
+import de.cosmocode.palava.bridge.content.Convertible;
+import de.cosmocode.palava.bridge.content.KeyValueState;
+import de.cosmocode.palava.bridge.content.StreamContent;
 
 @Entity
 public class Asset implements JSONEncoder, Convertible {

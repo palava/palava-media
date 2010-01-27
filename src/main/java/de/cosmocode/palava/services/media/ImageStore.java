@@ -1,6 +1,6 @@
 /**
  * palava - a java-php-bridge
- * Copyright (C) 2007  CosmoCode GmbH
+ * Copyright (C) 2007-2010  CosmoCode GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@ import java.io.File;
 
 import org.hibernate.Session;
 
-import de.cosmocode.palava.core.framework.Service;
+import de.cosmocode.palava.core.Service;
 
 /**
  * 
