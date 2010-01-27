@@ -21,14 +21,14 @@ package de.cosmocode.palava.jobs.assets;
 
 import java.util.Map;
 
-import de.cosmocode.palava.core.call.Call;
-import de.cosmocode.palava.core.command.Response;
-import de.cosmocode.palava.core.protocol.ConnectionLostException;
-import de.cosmocode.palava.core.protocol.content.MimeType;
-import de.cosmocode.palava.core.protocol.content.PhpContent;
-import de.cosmocode.palava.core.protocol.content.StreamContent;
-import de.cosmocode.palava.core.server.Server;
-import de.cosmocode.palava.core.session.HttpSession;
+import de.cosmocode.palava.core.bridge.call.Call;
+import de.cosmocode.palava.core.bridge.command.Response;
+import de.cosmocode.palava.core.bridge.session.HttpSession;
+import de.cosmocode.palava.core.bridge.simple.ConnectionLostException;
+import de.cosmocode.palava.core.bridge.simple.content.MimeType;
+import de.cosmocode.palava.core.bridge.simple.content.PhpContent;
+import de.cosmocode.palava.core.bridge.simple.content.StreamContent;
+import de.cosmocode.palava.legacy.server.Server;
 import de.cosmocode.palava.services.media.Asset;
 import de.cosmocode.palava.services.media.ImageManager;
 import de.cosmocode.palava.services.media.ImageStore;
@@ -43,15 +43,14 @@ public class upload extends HibernateJob {
         
         ImageStore ist = server.getServiceManager().lookup(ImageStore.class);
 
-
         Asset asset = (Asset) caddy.get("asset");
         if ( asset == null ) throw new NullPointerException("asset == null");
         MimeType mimetype = (MimeType) caddy.get("mimetype");
 
         // just use the request data as the content
         asset.setContent(new StreamContent(
-            request.getInputStream(), request.getHeader().getContentLength(), mimetype)
-        );
+            request.getInputStream(), request.getHeader().getContentLength(), mimetype
+        ));
 
         ImageManager im = ist.createImageManager(hibSession);
 

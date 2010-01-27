@@ -36,8 +36,8 @@ import org.json.JSONObject;
 import org.json.extension.JSONConstructor;
 import org.json.extension.JSONEncoder;
 
-import de.cosmocode.palava.core.protocol.content.MimeType;
-import de.cosmocode.palava.core.protocol.content.StreamContent;
+import de.cosmocode.palava.core.bridge.simple.content.MimeType;
+import de.cosmocode.palava.core.bridge.simple.content.StreamContent;
 import de.cosmocode.palava.legacy.ContentConverter;
 import de.cosmocode.palava.legacy.ConversionException;
 import de.cosmocode.palava.legacy.Convertible;

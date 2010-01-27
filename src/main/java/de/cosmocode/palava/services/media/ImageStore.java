@@ -23,7 +23,7 @@ import java.io.File;
 
 import org.hibernate.Session;
 
-import de.cosmocode.palava.core.Service;
+import de.cosmocode.palava.core.framework.Service;
 
 /**
  * 

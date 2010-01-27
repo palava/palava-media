@@ -21,13 +21,13 @@ package de.cosmocode.palava.jobs.assets;
 
 import java.util.Map;
 
-import de.cosmocode.palava.core.call.Call;
-import de.cosmocode.palava.core.call.MissingArgumentException;
-import de.cosmocode.palava.core.command.Response;
-import de.cosmocode.palava.core.protocol.DataCall;
-import de.cosmocode.palava.core.protocol.content.PhpContent;
-import de.cosmocode.palava.core.server.Server;
-import de.cosmocode.palava.core.session.HttpSession;
+import de.cosmocode.palava.core.bridge.call.Call;
+import de.cosmocode.palava.core.bridge.call.DataCall;
+import de.cosmocode.palava.core.bridge.call.MissingArgumentException;
+import de.cosmocode.palava.core.bridge.command.Response;
+import de.cosmocode.palava.core.bridge.session.HttpSession;
+import de.cosmocode.palava.core.bridge.simple.content.PhpContent;
+import de.cosmocode.palava.legacy.server.Server;
 import de.cosmocode.palava.services.media.ImageManager;
 import de.cosmocode.palava.services.media.ImageStore;
 import de.cosmocode.palava.services.persistence.hibernate.HibernateJob;
