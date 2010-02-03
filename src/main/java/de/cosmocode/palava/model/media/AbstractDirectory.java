@@ -20,13 +20,14 @@
 package de.cosmocode.palava.model.media;
 
 import de.cosmocode.json.JSONRenderer;
+import de.cosmocode.palava.model.base.AbstractEntity;
 
 /**
  * 
  *
  * @author Willi Schoenborn
  */
-public abstract class AbstractDirectory implements DirectoryBase {
+public abstract class AbstractDirectory extends AbstractEntity implements DirectoryBase {
 
     // TODO add level decision
     @Override
