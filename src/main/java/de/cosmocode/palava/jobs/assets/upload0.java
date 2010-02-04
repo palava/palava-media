@@ -25,6 +25,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.google.common.collect.Maps;
 
 import de.cosmocode.palava.bridge.ConnectionLostException;
@@ -66,10 +68,12 @@ public class upload0 implements Job {
         final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         Date date = null;
         
-        try {
-            date = format.parse(exDate);
-        } catch (ParseException e) {
-            //TODO handle format exception
+        if (StringUtils.isNotBlank(exDate)) {
+            try {
+                date = format.parse(exDate);
+            } catch (ParseException e) {
+                //TODO handle format exception
+            }
         }
         
         asset.setExpirationDate(date);
