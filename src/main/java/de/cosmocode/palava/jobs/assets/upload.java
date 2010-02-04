@@ -42,16 +42,16 @@ public class upload extends HibernateJob {
     private ImageStore imageStore;
     
     @Override
-    public void process(Call request, Response response, HttpSession session,
+    public void process(Call call, Response response, HttpSession session,
         Server server, Map<String, Object> caddy, org.hibernate.Session hibSession) throws Exception {
         
-        final Asset asset = request.getHttpRequest().get("asset");
+        final Asset asset = call.getHttpRequest().get("asset");
         Preconditions.checkNotNull(asset, "Asset");
-        final MimeType mimetype = request.getHttpRequest().get("mimetype");
+        final MimeType mimetype = call.getHttpRequest().get("mimetype");
 
         // just use the request data as the content
         asset.setContent(new StreamContent(
-            request.getInputStream(), request.getHeader().getContentLength(), mimetype
+            call.getInputStream(), call.getHeader().getContentLength(), mimetype
         ));
 
         final ImageManager im = imageStore.createImageManager(hibSession);

@@ -109,11 +109,11 @@ public class AssetManager {
             session.save(asset);            
             session.flush();
             tx.commit();
-        } catch ( Exception e) {
+        } catch (HibernateException e) {
+            log.error("Saving asset failed", e);
             store.remove(key);
-            tx.rollback();
             asset.setStoreKey(null);
-
+            tx.rollback();
             throw e;
         }
     }
