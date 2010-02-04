@@ -204,7 +204,7 @@ public class Asset implements JSONEncoder, Convertible {
         this.metaData = metaData;
     }
 
-    public void fillMetaData(Map<String, String> map) throws JSONException {
+    public void fillMetaData(Map<String, ?> map) throws JSONException {
         if (metaData == null) metaData = "{}";
         
         JSONObject json = new JSONObject(metaData);

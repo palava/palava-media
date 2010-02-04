@@ -21,7 +21,9 @@ package de.cosmocode.palava.jobs.assets;
 
 import java.util.Map;
 
-import de.cosmocode.palava.bridge.ConnectionLostException;
+import com.google.common.base.Preconditions;
+import com.google.inject.Inject;
+
 import de.cosmocode.palava.bridge.MimeType;
 import de.cosmocode.palava.bridge.Server;
 import de.cosmocode.palava.bridge.call.Call;
@@ -36,27 +38,27 @@ import de.cosmocode.palava.services.persistence.hibernate.HibernateJob;
 
 public class upload extends HibernateJob {
 
+    @Inject
+    private ImageStore imageStore;
+    
     @Override
     public void process(Call request, Response response, HttpSession session,
-            Server server, Map<String, Object> caddy, org.hibernate.Session hibSession)
-            throws ConnectionLostException, Exception {
+        Server server, Map<String, Object> caddy, org.hibernate.Session hibSession) throws Exception {
         
-        ImageStore ist = server.getServiceManager().lookup(ImageStore.class);
-
-        Asset asset = (Asset) caddy.get("asset");
-        if ( asset == null ) throw new NullPointerException("asset == null");
-        MimeType mimetype = (MimeType) caddy.get("mimetype");
+        final Asset asset = request.getHttpRequest().get("asset");
+        Preconditions.checkNotNull(asset, "Asset");
+        final MimeType mimetype = request.getHttpRequest().get("mimetype");
 
         // just use the request data as the content
         asset.setContent(new StreamContent(
             request.getInputStream(), request.getHeader().getContentLength(), mimetype
         ));
 
-        ImageManager im = ist.createImageManager(hibSession);
+        final ImageManager im = imageStore.createImageManager(hibSession);
 
         im.createAsset(asset);
 
-        response.setContent( new PhpContent(asset.getId()) );
+        response.setContent(new PhpContent(asset.getId()));
     }
 
 }

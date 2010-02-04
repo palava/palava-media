@@ -19,16 +19,19 @@
 
 package de.cosmocode.palava.jobs.assets;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
+import com.google.common.collect.Maps;
+
 import de.cosmocode.palava.bridge.ConnectionLostException;
 import de.cosmocode.palava.bridge.MimeType;
 import de.cosmocode.palava.bridge.Server;
+import de.cosmocode.palava.bridge.call.Arguments;
 import de.cosmocode.palava.bridge.call.Call;
-import de.cosmocode.palava.bridge.call.DataCall;
 import de.cosmocode.palava.bridge.call.MissingArgumentException;
 import de.cosmocode.palava.bridge.command.Job;
 import de.cosmocode.palava.bridge.command.Response;
@@ -39,39 +42,43 @@ import de.cosmocode.palava.services.media.Asset;
 public class upload0 implements Job {
 
     @Override
-    public void process(Call request, Response response, HttpSession session,
-            Server server, Map<String, Object> caddy) throws ConnectionLostException, Exception {
+    public void process(Call call, Response response, HttpSession session,
+            Server server, Map<String, Object> caddy) throws Exception {
         
-        DataCall req = (DataCall) request;
-        final Map<String, String> map = req.getStringedArguments();
+        final Arguments map = call.getArguments();
+        
+        map.require("mimetype");
+        
+        final String mimetype = map.getString("mimetype");
 
-        String mimetype = map.get("mimetype");
-        if ( mimetype == null ) throw new MissingArgumentException(this,"mimetype");
-
-        Asset asset = new Asset();
-        asset.setName( map.remove("name") );
-        asset.setDescription(map.remove("description"));
-        asset.setTitle(map.remove("title"));
+        final Asset asset = new Asset();
+        asset.setName(map.getString("name"));
+        map.remove("name");
+        asset.setDescription(map.getString("description"));
+        map.remove("description");
+        asset.setTitle(map.getString("title"));
+        map.remove("title");
         asset.setExpiresNever(map.containsKey("expires"));
         map.remove("expires");
         
-        String exDate = map.remove("expirationDate");        
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        final String exDate = map.getString("expirationDate");
+        map.remove("expirationDate");
+        final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         Date date = null;
         
         try {
             date = format.parse(exDate);
-        } catch (Exception e) {
+        } catch (ParseException e) {
             //TODO handle format exception
         }
         
         asset.setExpirationDate(date);
         asset.fillMetaData(map);
                 
-        caddy.put("asset", asset );
-        caddy.put("mimetype", new MimeType(mimetype) );
+        call.getHttpRequest().set("asset", asset);
+        call.getHttpRequest().set("mimetype", new MimeType(mimetype));
 
-        response.setContent( PhpContent.OK );
+        response.setContent(PhpContent.OK);
     }
 
 }
