@@ -21,10 +21,11 @@ package de.cosmocode.palava.jobs.assets;
 
 import java.util.Map;
 
+import com.google.inject.Inject;
+
 import de.cosmocode.palava.bridge.Server;
+import de.cosmocode.palava.bridge.call.Arguments;
 import de.cosmocode.palava.bridge.call.Call;
-import de.cosmocode.palava.bridge.call.DataCall;
-import de.cosmocode.palava.bridge.call.MissingArgumentException;
 import de.cosmocode.palava.bridge.command.Response;
 import de.cosmocode.palava.bridge.content.PhpContent;
 import de.cosmocode.palava.bridge.session.HttpSession;
@@ -34,30 +35,28 @@ import de.cosmocode.palava.services.persistence.hibernate.HibernateJob;
 
 public class addDirectory extends HibernateJob {
 
+    @Inject
+    private ImageStore imageStore;
+    
     @Override
-    public void process(Call req, Response resp, HttpSession session,
+    public void process(Call call, Response resp, HttpSession session,
             Server server, Map<String, Object> caddy,
             org.hibernate.Session hibSession) throws Exception {
         
-        ImageStore ist = server.getServiceManager().lookup(ImageStore.class);
+        final Arguments map = call.getArguments();
+        map.require("id", "name", "assetId");
 
-        DataCall request = (DataCall) req;
-        final Map<String, String> map = request.getStringedArguments();
+        final String dirId = map.getString("id");
+        final String name = map.getString("name");
+        final String assetId = map.getString("assetId");
 
-        String dirId = map.get("id");
-        String name = map.get("name");
-        if ( dirId == null && name == null ) throw new MissingArgumentException(this, "id or name");
+        final ImageManager manager = imageStore.createImageManager(hibSession);
 
-        String assetId = map.get("assetId");
-        if ( assetId == null ) throw new MissingArgumentException(this,"assetId");
+        final Long resultId = manager.addAssetToDirectory(
+            dirId == null ? null : Long.parseLong(dirId), name, Long.parseLong(assetId)
+        ).getId();
 
-        ImageManager im = ist.createImageManager(hibSession);
-
-        Long resultId = im.addAssetToDirectory((dirId != null) ? Long.parseLong(dirId) : null, name, Long.parseLong(assetId) ).getId();
-
-        resp.setContent( new PhpContent(resultId) );
+        resp.setContent(new PhpContent(resultId));
     }
-
-    
 
 }
