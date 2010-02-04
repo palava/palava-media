@@ -61,7 +61,7 @@ public class upload0 implements Job {
         asset.setExpiresNever(map.containsKey("expires"));
         map.remove("expires");
         
-        final String exDate = map.getString("expirationDate");
+        final String exDate = map.getString("expirationDate", null);
         map.remove("expirationDate");
         final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         Date date = null;
