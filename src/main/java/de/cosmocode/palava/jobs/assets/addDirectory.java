@@ -44,7 +44,7 @@ public class addDirectory extends HibernateJob {
             org.hibernate.Session hibSession) throws Exception {
         
         final Arguments map = call.getArguments();
-        map.require("id", "name", "assetId");
+        map.require("id", "assetId");
 
         final String dirId = map.getString("id");
         final String name = map.getString("name");
