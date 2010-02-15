@@ -46,8 +46,8 @@ public class addDirectory extends HibernateJob {
         final Arguments map = call.getArguments();
         map.require("id", "assetId");
 
-        final String dirId = map.getString("id");
-        final String name = map.getString("name");
+        final String dirId = map.getString("id", null);
+        final String name = map.getString("name", null);
         final String assetId = map.getString("assetId");
 
         final ImageManager manager = imageStore.createImageManager(hibSession);
