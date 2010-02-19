@@ -28,9 +28,9 @@ import de.cosmocode.palava.bridge.call.MissingArgumentException;
 import de.cosmocode.palava.bridge.command.Response;
 import de.cosmocode.palava.bridge.content.PhpContent;
 import de.cosmocode.palava.bridge.session.HttpSession;
+import de.cosmocode.palava.jpa.hibernate.HibernateJob;
 import de.cosmocode.palava.services.media.ImageManager;
 import de.cosmocode.palava.services.media.ImageStore;
-import de.cosmocode.palava.services.persistence.hibernate.HibernateJob;
 
 public class removeFromDirectory extends HibernateJob {
 

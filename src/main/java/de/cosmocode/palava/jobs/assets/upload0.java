@@ -27,14 +27,10 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.google.common.collect.Maps;
-
-import de.cosmocode.palava.bridge.ConnectionLostException;
 import de.cosmocode.palava.bridge.MimeType;
 import de.cosmocode.palava.bridge.Server;
 import de.cosmocode.palava.bridge.call.Arguments;
 import de.cosmocode.palava.bridge.call.Call;
-import de.cosmocode.palava.bridge.call.MissingArgumentException;
 import de.cosmocode.palava.bridge.command.Job;
 import de.cosmocode.palava.bridge.command.Response;
 import de.cosmocode.palava.bridge.content.PhpContent;

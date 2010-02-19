@@ -32,11 +32,11 @@ import de.cosmocode.palava.bridge.call.MissingArgumentException;
 import de.cosmocode.palava.bridge.command.Response;
 import de.cosmocode.palava.bridge.content.JsonContent;
 import de.cosmocode.palava.bridge.session.HttpSession;
+import de.cosmocode.palava.jpa.hibernate.HibernateJob;
 import de.cosmocode.palava.services.media.Asset;
 import de.cosmocode.palava.services.media.Directory;
 import de.cosmocode.palava.services.media.ImageManager;
 import de.cosmocode.palava.services.media.ImageStore;
-import de.cosmocode.palava.services.persistence.hibernate.HibernateJob;
 
 public class getDirectoryLong extends HibernateJob {
 
