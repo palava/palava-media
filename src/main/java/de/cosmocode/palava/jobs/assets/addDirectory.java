@@ -33,6 +33,12 @@ import de.cosmocode.palava.jpa.hibernate.HibernateJob;
 import de.cosmocode.palava.services.media.ImageManager;
 import de.cosmocode.palava.services.media.ImageStore;
 
+/**
+ * @deprecated legacy support
+ *
+ * @author Willi Schoenborn
+ */
+@Deprecated
 public class addDirectory extends HibernateJob {
 
     @Inject

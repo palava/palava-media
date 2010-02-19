@@ -17,23 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package de.cosmocode.palava.model.media;
+package de.cosmocode.palava.media.directories;
 
-import de.cosmocode.json.JSONRenderer;
-import de.cosmocode.palava.model.base.AbstractEntity;
+import java.util.Map;
 
-/**
- * 
- *
- * @author Willi Schoenborn
- */
-public abstract class AbstractDirectory extends AbstractEntity implements DirectoryBase {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    // TODO add level decision
+import de.cosmocode.palava.ipc.IpcCall;
+import de.cosmocode.palava.ipc.IpcCommand;
+import de.cosmocode.palava.ipc.IpcCommandExecutionException;
+
+public final class Update implements IpcCommand {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Update.class);
+
     @Override
-    public JSONRenderer renderAsMap(JSONRenderer renderer) {
-        return renderer.
-            key("assets").array(getAssets());
+    public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
+        // TODO Auto-generated method stub
+
     }
 
 }

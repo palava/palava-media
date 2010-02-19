@@ -17,20 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package de.cosmocode.palava.model.media;
+package de.cosmocode.palava.media.assets;
 
-import java.util.List;
+import java.util.Map;
 
-import de.cosmocode.json.JSONMapable;
-import de.cosmocode.palava.model.base.EntityBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public interface DirectoryBase extends EntityBase, JSONMapable {
+import de.cosmocode.palava.ipc.IpcCall;
+import de.cosmocode.palava.ipc.IpcCommand;
+import de.cosmocode.palava.ipc.IpcCommandExecutionException;
 
-    /**
-     * ORDERED!
-     * 
-     * @return
-     */
-    List<? extends AssetBase> getAssets();
-    
+public final class Delete implements IpcCommand {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Delete.class);
+
+    @Override
+    public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
+        // TODO Auto-generated method stub
+
+    }
+
 }
