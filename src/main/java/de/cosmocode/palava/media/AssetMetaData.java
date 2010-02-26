@@ -31,8 +31,6 @@ import javax.persistence.ManyToOne;
 
 import com.google.common.base.Preconditions;
 
-import de.cosmocode.palava.services.media.Asset;
-
 /**
  * An helper entity required by jpa to allow
  * mapping of {@link Map}s.
@@ -53,17 +51,17 @@ final class AssetMetaData {
         private static final long serialVersionUID = 8691605576719374637L;
 
         @ManyToOne(fetch = FetchType.EAGER, optional = false)
-        private Asset asset;
+        private AssetBase asset;
 
         @Column(name = "meta_key", nullable = false)
         private String key;
 
 
-        public Asset getAsset() {
+        public AssetBase getAsset() {
             return asset;
         }
 
-        public void setAsset(Asset asset) {
+        public void setAsset(AssetBase asset) {
             this.asset = asset;
         }
 
