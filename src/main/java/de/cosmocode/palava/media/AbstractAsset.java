@@ -66,6 +66,7 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
     private String description;
 
     @Column(name = "expires_at")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date expiresAt;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "asset")
