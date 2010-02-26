@@ -29,16 +29,16 @@ import de.cosmocode.palava.security.Permissions;
 @Permissions
 public final class MediaPermissions {
 
-    public static final String CREATE_DIRECTORY = "directory:create";
-    public static final String UPDATE_DIRECTORY = "directory:update";
-    public static final String READ_DIRECTORY = "directory:read";
-    public static final String DELETE_DIRECTORY = "directory:delete";
+    public static final String DIRECTORY_CREATE = "directory:create";
+    public static final String DIRECTORY_UPDATE = "directory:update";
+    public static final String DIRECTORY_READ = "directory:read";
+    public static final String DIRECTORY_DELETE = "directory:delete";
     
-    public static final String CREATE_ASSET = "asset:create";
-    public static final String UPDATE_ASSET = "asset:update";
-    public static final String READ_ASSET = "asset:read";
-    public static final String DELETE_ASSET = "asset:delete";
-    public static final String DOWNLOAD_ASSET = "asset:download";
+    public static final String ASSET_CREATE = "asset:create";
+    public static final String ASSET_UPDATE = "asset:update";
+    public static final String ASSET_READ = "asset:read";
+    public static final String ASSET_DELETE = "asset:delete";
+    public static final String ASSET_DOWNLOAD = "asset:download";
     
     private MediaPermissions() {
         

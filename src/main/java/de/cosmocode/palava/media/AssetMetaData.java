@@ -19,27 +19,44 @@
 
 package de.cosmocode.palava.media;
 
+import java.io.Serializable;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.ManyToOne;
+
+import com.google.common.base.Preconditions;
+
 import de.cosmocode.palava.services.media.Asset;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Locale;
-
-
 /**
+ * An helper entity required by jpa to allow
+ * mapping of {@link Map}s.
+ * 
  * @author Tobias Sarnowski
  */
 @Entity
 @IdClass(AssetMetaData.AssetMetaDataId.class)
-public class AssetMetaData {
+final class AssetMetaData {
 
+    /**
+     * Composite primary key for {@link AssetMetaData}.
+     *
+     * @author Willi Schoenborn
+     */
     public static class AssetMetaDataId implements Serializable {
+
+        private static final long serialVersionUID = 8691605576719374637L;
 
         @ManyToOne(fetch = FetchType.EAGER, optional = false)
         private Asset asset;
 
-        @Column(nullable = false)
-        private String metaKey;
+        @Column(name = "meta_key", nullable = false)
+        private String key;
 
 
         public Asset getAsset() {
@@ -50,12 +67,12 @@ public class AssetMetaData {
             this.asset = asset;
         }
 
-        public String getMetaKey() {
-            return metaKey;
+        public String getKey() {
+            return key;
         }
 
-        public void setMetaKey(String metaKey) {
-            this.metaKey = metaKey;
+        public void setKey(String key) {
+            this.key = key;
         }
 
         @Override
@@ -66,7 +83,7 @@ public class AssetMetaData {
             final AssetMetaDataId that = (AssetMetaDataId) o;
 
             if (asset != null ? !asset.equals(that.asset) : that.asset != null) return false;
-            if (metaKey != null ? !metaKey.equals(that.metaKey) : that.metaKey != null) return false;
+            if (key != null ? !key.equals(that.key) : that.key != null) return false;
 
             return true;
         }
@@ -74,7 +91,7 @@ public class AssetMetaData {
         @Override
         public int hashCode() {
             int result = asset != null ? asset.hashCode() : 0;
-            result = 31 * result + (metaKey != null ? metaKey.hashCode() : 0);
+            result = 31 * result + (key != null ? key.hashCode() : 0);
             return result;
         }
     }
@@ -84,16 +101,22 @@ public class AssetMetaData {
 
     @Id
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    private Asset asset;
+    private AssetBase asset;
 
-    @Column(nullable = false)
-    private String metaKey;
+    @Column(name = "meta_key", nullable = false)
+    private String key;
 
-    public Asset getAsset() {
+    public AssetMetaData(AssetBase asset, String key, String value) {
+        this.asset = Preconditions.checkNotNull(asset, "Asset");
+        this.key = Preconditions.checkNotNull(key, "Key");
+        this.value = value;
+    }
+
+    public AssetBase getAsset() {
         return asset;
     }
 
-    public void setAsset(Asset asset) {
+    public void setAsset(AssetBase asset) {
         this.asset = asset;
     }
 
@@ -105,12 +128,12 @@ public class AssetMetaData {
         this.value = value;
     }
 
-    public String getMetaKey() {
-        return metaKey;
+    public String getKey() {
+        return key;
     }
 
-    public void setMetaKey(String metaKey) {
-        this.metaKey = metaKey;
+    public void setKey(String key) {
+        this.key = key;
     }
 
 }

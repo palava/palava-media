@@ -19,11 +19,18 @@
 
 package de.cosmocode.palava.media;
 
+import java.util.AbstractMap;
+import java.util.AbstractSet;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.persistence.*;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 
 import de.cosmocode.commons.TrimMode;
@@ -31,9 +38,26 @@ import de.cosmocode.json.JSONRenderer;
 import de.cosmocode.json.RenderLevel;
 import de.cosmocode.palava.model.base.AbstractEntity;
 
+/**
+ * Abstract base implementation of the {@link AssetBase} interface
+ * which uses {@link AssetMetaData} to provide JPA compliant
+ * mapping functionality.
+ *
+ * @author Willi Schoenborn
+ */
 @MappedSuperclass
 public abstract class AbstractAsset extends AbstractEntity implements AssetBase {
 
+    private static final Function<Entry<String, AssetMetaData>, Entry<String, String>> FUNCTION =
+        new Function<Entry<String, AssetMetaData>, Entry<String, String>>() {
+            
+            @Override
+            public Entry<String, String> apply(Entry<String, AssetMetaData> from) {
+                return Maps.immutableEntry(from.getKey(), from.getValue().getValue());
+            }
+            
+        };
+    
     private String name;
 
     private String title;
@@ -41,13 +65,58 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
     // TODO text/mediumtext
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "asset")
-    @MapKey(name = "metaKey")
-    private Map<String, AssetMetaData> metaData = Maps.newHashMap();
-
     @Column(name = "expires_at")
     private Date expiresAt;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "asset")
+    @MapKey(name = "key")
+    private Map<String, AssetMetaData> metaData = Maps.newHashMap();
+
+    // hidden adapter for metaData
+    @Transient
+    private final transient Map<String, String> adapter = new MetaDataAdapter();
+
+    /**
+     * A map adapter for {@link AbstractAsset#metaData} which translates
+     * from String to {@link AssetMetaData} and vice versa.
+     *
+     * @author Willi Schoenborn
+     */
+    private class MetaDataAdapter extends AbstractMap<String, String> {
+        
+        @Override
+        public Set<Entry<String, String>> entrySet() {
+            return new AbstractSet<Entry<String, String>>() {
+
+                @Override
+                public Iterator<Entry<String, String>> iterator() {
+                    return Iterators.transform(metaData.entrySet().iterator(), FUNCTION);
+                }
+
+                @Override
+                public int size() {
+                    return metaData.size();
+                }
+                
+            };
+        }
+        
+        @Override
+        public String put(String key, String value) {
+            final AssetMetaData old = metaData.get(key);
+            if (old == null) {
+                final AssetMetaData data = new AssetMetaData(AbstractAsset.this, key, value);
+                metaData.put(key, data);
+                return null;
+            } else {
+                final String oldValue = old.getValue();
+                old.setValue(value);
+                return oldValue;
+            }
+        }
+        
+    };
+    
     @Override
     public String getName() {
         return name;
@@ -79,13 +148,6 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
     }
 
     @Override
-    public Map<String, String> getMetaData() {
-        // TODO implement map representation of AssetMetaData 
-        //return metaData;
-        throw new UnsupportedOperationException("todo");
-    }
-
-    @Override
     public Date getExpiresAt() {
         return expiresAt;
     }
@@ -102,7 +164,12 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
 
     @Override
     public boolean isExpired() {
-        return isExpirable() && expiresAt.getTime() < System.currentTimeMillis();
+        return isExpirable() && getExpiresAt().getTime() < System.currentTimeMillis();
+    }
+    
+    @Override
+    public Map<String, String> getMetaData() {
+        return adapter;
     }
 
     @Override
@@ -117,10 +184,13 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
         if (renderer.eq(RenderLevel.MEDIUM)) {
             renderer.
                 key("description").value(getDescription()).
-                key("metaData").value(getMetaData()).
                 key("expiresAt").value(getExpiresAt()).
                 key("isExpirable").value(isExpirable()).
                 key("isExpired").value(isExpired());
+        }
+        if (renderer.eq(RenderLevel.LONG)) {
+            renderer.
+                key("metaData").object(getMetaData());
         }
 
         return renderer;
