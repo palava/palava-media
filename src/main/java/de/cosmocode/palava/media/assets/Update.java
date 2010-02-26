@@ -61,7 +61,7 @@ import de.cosmocode.palava.media.AssetBase;
         defaultValue = "null"
     ),
     @Param(
-        name = Update.DESCRIPTION, 
+        name = Update.DESCRIPTION,
         type = "string",
         description = "The asset's description",
         optional = true,
@@ -95,9 +95,9 @@ public final class Update implements IpcCommand {
     public static final String DESCRIPTION = "description";
     public static final String META_DATA = "metaData";
     public static final String EXPIRES_AT = "expiresAt";
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(Update.class);
-    
+
     private final EntityService<AssetBase> service;
 
     @Inject
@@ -108,25 +108,25 @@ public final class Update implements IpcCommand {
     @Override
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final IpcArguments arguments = call.getArguments();
-        
+
         final long assetId = arguments.getLong(ASSET_ID);
-        
+
         final AssetBase asset = service.read(assetId);
-        
+
         if (asset == null) {
             throw new PersistenceException(String.format("No asset found with id %s", assetId));
         }
-        
+
         final String title = arguments.getString(TITLE, null);
         final String description = arguments.getString(DESCRIPTION, null);
         final Map<Object, Object> metaData = arguments.getMap(META_DATA, null);
         final Date expiresAt = arguments.getDate(EXPIRES_AT, null);
-        
+
         asset.setTitle(title);
         asset.setDescription(description);
-        
+
         asset.getMetaData().clear();
-        
+
         if (metaData == null) {
             LOG.debug("No meta data received");
         } else {
@@ -139,7 +139,7 @@ public final class Update implements IpcCommand {
                 asset.getMetaData().put(key, value);
             }
         }
-        
+
         asset.setExpiresAt(expiresAt);
 
         service.update(asset);

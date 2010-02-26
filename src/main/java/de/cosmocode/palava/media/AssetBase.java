@@ -30,30 +30,30 @@ import de.cosmocode.json.JSONMapable;
 import de.cosmocode.palava.model.base.EntityBase;
 
 public interface AssetBase extends EntityBase, JSONMapable {
-    
+
     /**
      * Allows ordering by expiration date, which will move the expired assets to the top.
      */
     Ordering<AssetBase> ORDER_BY_EXPIRATION = Ordering.natural().nullsLast().onResultOf(
         new Function<AssetBase, Date>() {
-            
+
             @Override
             public Date apply(AssetBase from) {
                 return from.getExpiresAt();
             }
-            
+
         });
 
     String getName();
-    
+
     void setName(String name);
-    
+
     String getTitle();
-    
+
     void setTitle(String title);
-    
+
     String getDescription();
-    
+
     void setDescription(String description);
 
     Map<String, String> getMetaData();
@@ -61,11 +61,11 @@ public interface AssetBase extends EntityBase, JSONMapable {
     ImmutableSet<? extends DirectoryBase> getDirectories();
 
     Date getExpiresAt();
-    
+
     void setExpiresAt(Date expiresAt);
-    
+
     boolean isExpirable();
-    
+
     boolean isExpired();
-    
+
 }
