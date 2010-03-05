@@ -77,14 +77,10 @@ public final class AddAsset implements IpcCommand {
         final long directoryId = arguments.getLong(DIRECTORY_ID);
         final DirectoryBase directory = directoryService.read(directoryId);
         
-        if (directory == null) {
-            throw new PersistenceException(String.format("No directory found with id %s", directoryId));
-        }
-        
         final long assetId = arguments.getLong(ASSET_ID);
         final AssetBase asset = assetService.reference(assetId);
         
-        directory.add(asset);
+        directory.getAssets().add(asset);
         
         directoryService.update(directory);
     }

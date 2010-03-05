@@ -32,7 +32,7 @@ public abstract class AbstractDirectory extends AbstractEntity implements Direct
     // TODO add level decision
     @Override
     public JSONRenderer renderAsMap(JSONRenderer renderer) {
-        return renderer.
+        return super.renderAsMap(renderer).
             key("assets").array(getAssets());
     }
 

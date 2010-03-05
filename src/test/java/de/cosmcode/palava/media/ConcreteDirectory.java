@@ -19,34 +19,29 @@
 
 package de.cosmcode.palava.media;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
 import de.cosmocode.palava.media.AbstractDirectory;
-import de.cosmocode.palava.media.AssetBase;
+import de.cosmocode.palava.media.DirectoryBase;
 
+/**
+ * Dummy implementation of the {@link DirectoryBase} interface
+ * which is used to check "compilability".
+ *
+ * @author Willi Schoenborn
+ */
 public class ConcreteDirectory extends AbstractDirectory {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ConcreteDirectory.class);
-
     @Override
-    public ImmutableList<ConcreteAsset> getAssets() {
-        // TODO Auto-generated method stub
-        return null;
+    public long getId() {
+        return 0;
     }
     
     @Override
-    public boolean add(AssetBase asset) {
-        // TODO Auto-generated method stub
-        return false;
+    public List<ConcreteAsset> getAssets() {
+        return ImmutableList.of();
     }
-
-    @Override
-    public boolean remove(AssetBase asset) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
+    
 }

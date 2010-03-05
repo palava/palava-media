@@ -65,11 +65,6 @@ public final class Read implements IpcCommand {
         final IpcArguments arguments = call.getArguments();
         final long directoryId = arguments.getLong(DIRECTORY_ID);
         final DirectoryBase directory = service.read(directoryId);
-        
-        if (directory == null) {
-            throw new PersistenceException(String.format("No directory found with id %s", directoryId));
-        }
-        
         result.put(DIRECTORY, directory);
     }
 

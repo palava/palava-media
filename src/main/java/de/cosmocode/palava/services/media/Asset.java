@@ -36,20 +36,44 @@ import org.json.JSONObject;
 import org.json.extension.JSONConstructor;
 import org.json.extension.JSONEncoder;
 
+import com.google.common.collect.ImmutableSet;
+
+import de.cosmocode.json.JSON;
+import de.cosmocode.json.JSONRenderer;
 import de.cosmocode.palava.bridge.MimeType;
 import de.cosmocode.palava.bridge.content.ContentConverter;
 import de.cosmocode.palava.bridge.content.ConversionException;
 import de.cosmocode.palava.bridge.content.Convertible;
 import de.cosmocode.palava.bridge.content.KeyValueState;
 import de.cosmocode.palava.bridge.content.StreamContent;
+import de.cosmocode.palava.media.AbstractAsset;
+import de.cosmocode.palava.media.AssetBase;
+import de.cosmocode.palava.media.DirectoryBase;
+import de.cosmocode.palava.model.base.EntityBase;
 
+/**
+ * 
+ * 
+ * @deprecated use {@link AssetBase} or {@link AbstractAsset} instead
+ *
+ * @author Willi Schoenborn
+ */
+@Deprecated
 @Entity
-public class Asset implements JSONEncoder, Convertible {
+public class Asset implements AssetBase, JSONEncoder, Convertible {
     
-    
+    /**
+     * @deprecated use {@code EntityBase.ORDER_BY_AGE.reverse()} instead
+     *
+     * @author Willi Schoenborn
+     */
+    @Deprecated
     public static class ByCreationDateComparator implements Comparator<Asset> {
+        
         public static final ByCreationDateComparator INSTANCE = new ByCreationDateComparator();
-        public int compare( Asset a, Asset b ) {
+        
+        @Override
+        public int compare(Asset a, Asset b) {
             // null is less than 
             if (a == null && b == null) return 0;
             if (a == null) return -1;
@@ -57,9 +81,6 @@ public class Asset implements JSONEncoder, Convertible {
             return - a.creationDate.compareTo(b.creationDate);
         }
 
-        public boolean equals( Object o ) {
-            return (o instanceof ByCreationDateComparator);
-        }
     };
 
     @Id
@@ -67,27 +88,30 @@ public class Asset implements JSONEncoder, Convertible {
     private Long id;
     
     private String storeKey;
+    
     private String mime;
+    
     private long length;
-    /*
-    @Lob
-    @Type(type="blob")
-    private Blob blb; 
-     */
+    
     private transient StreamContent content;
+    
     private String name;
+    
     private String title;
+    
     private String description;
-    private Date creationDate;
-    private Date modificationDate;
+    
+    private Date creationDate = new Date();
+    
+    private Date modificationDate = new Date();
     
     private Date expirationDate;
     
-    @Column(nullable=false)
+    @Column(nullable = false)
     private boolean expiresNever;
 
     /**
-     * JSON Object:
+     * JSON Object.
      * {
      *  "key" : "value",
      *  "key" : "value"
@@ -95,36 +119,125 @@ public class Asset implements JSONEncoder, Convertible {
      */
     private String metaData;
 
-    public Asset() {
-        creationDate = new Date();
-        modificationDate = new Date();
-        expiresNever = false;
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public Date getCreatedAt() {
+        return getCreationDate();
     }
     
+    @Override
+    public void setCreatedAt(Date createdAt) {
+        setCreationDate(createdAt);
+    }
+    
+    @Override
+    public void setCreated() {
+        setCreatedAt(new Date());
+    }
+    
+    @Override
+    public Date getModifiedAt() {
+        return getModificationDate();
+    }
+    
+    @Override
+    public void setModifiedAt(Date modifiedAt) {
+        setModificationDate(modifiedAt);
+    }
+    
+    @Override
+    public void setModified() {
+        setModifiedAt(new Date());
+    }
+    
+    @Override
+    public Date getDeletedAt() {
+        return null;
+    }
+    
+    @Override
+    public void setDeletedAt(Date deletedAt) {
+        throw new UnsupportedOperationException();
+    }
+    
+    @Override
+    public void setDeleted() {
+        throw new UnsupportedOperationException();
+    }
+    
+    @Override
+    public boolean isDeleted() {
+        return false;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
 
+    @Override
     public void setTitle(String title) {
         this.title = title;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    @Override
+    public Map<String, String> getMetaData() {
+        throw new UnsupportedOperationException();
+    }
 
+    @Override
+    public ImmutableSet<? extends DirectoryBase> getDirectories() {
+        throw new UnsupportedOperationException();
+    }
+    
+    @Override
+    public Date getExpiresAt() {
+        return getExpirationDate();
+    }
+    
+    @Override
+    public void setExpiresAt(Date expiresAt) {
+        setExpirationDate(expiresAt);
+    }
+    
+    @Override
+    public boolean isExpirable() {
+        return !expiresNever;
+    }
+    
+    @Override
+    public boolean isExpired() {
+        if (expirationDate == null) {
+            return !expiresNever;
+        } else {
+            return expiresNever ? false : expirationDate.before(new Date());
+        }
+    }
+    
     public Date getCreationDate() {
         return creationDate;
     }
@@ -160,11 +273,7 @@ public class Asset implements JSONEncoder, Convertible {
         
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -196,14 +305,6 @@ public class Asset implements JSONEncoder, Convertible {
         this.expiresNever = expiresNever;
     }
 
-    public String getMetaData() {
-        return metaData;
-    }
-
-    public void setMetaData(String metaData) {
-        this.metaData = metaData;
-    }
-
     public void fillMetaData(Map<String, ?> map) throws JSONException {
         if (metaData == null) metaData = "{}";
         
@@ -213,14 +314,6 @@ public class Asset implements JSONEncoder, Convertible {
         }
         
         metaData = json.toString();
-    }
-    
-    public boolean isExpired() {
-        if (expirationDate == null) {
-            return !expiresNever;
-        } else {
-            return expiresNever ? false : expirationDate.before(new Date());
-        }
     }
     
     public boolean isExpired(boolean oldStyleCheck) {
@@ -269,18 +362,48 @@ public class Asset implements JSONEncoder, Convertible {
     }
 
     @Override
-    public boolean equals (Object object) {
-        if (object instanceof Asset) {
-            Asset asset = (Asset) object;
-            return asset.getId() == this.id || super.equals(object);
+    public JSONRenderer renderAsMap(JSONRenderer renderer) {
+        try {
+            encodeJSON(JSON.asJSONConstructor(renderer));
+        } catch (JSONException e) {
+            throw new IllegalStateException(e);
         }
-        else return super.equals (object);
+        return renderer;
     }
     
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Asset)) {
+            return false;
+        }
+        final Asset other = (Asset) obj;
+        if (id == null) {
+            if (other.id != null) {
+                return false;
+            }
+        } else if (!id.equals(other.id)) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public String toString() {
         return "[" + getId() + "] " + name;
     }
-
 
 }

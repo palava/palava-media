@@ -127,7 +127,7 @@ public class AssetManager {
             // then abort the whole deletion of this asset at once
             log.info("Currently removing asset with id {} from directory with id {}", id, dirId);
             Directory directory = getDirectory (dirId);
-            if ( ! directory.removeAsset(asset) )
+            if ( ! directory.getAssets().remove(asset) )
                 return Boolean.FALSE;
             session.saveOrUpdate (directory);
         }
@@ -176,9 +176,7 @@ public class AssetManager {
         
         final Map<Long, String> map = new HashMap<Long, String>();
         
-        final Query query = session.
-            getNamedQuery("directoriesByAssetId").
-            setLong("assetId", assetId);
+        final Query query = session.getNamedQuery(Directory.BY_ASSET_ID).setLong("assetId", assetId);
         
         final List<Object[]> list = query.list();
         
@@ -200,7 +198,7 @@ public class AssetManager {
     public Boolean removeAssetFromDirectory ( Long directoryId, Long assetId) throws Exception {
         Directory directory = (Directory) session.load(Directory.class, directoryId);
         Asset asset = (Asset) session.load(Asset.class, assetId);
-        if ( ! directory.removeAsset(asset) )
+        if (!directory.getAssets().remove(asset))
             return Boolean.FALSE;
         
 

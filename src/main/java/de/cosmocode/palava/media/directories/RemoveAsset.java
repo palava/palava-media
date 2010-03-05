@@ -64,7 +64,8 @@ public final class RemoveAsset implements IpcCommand {
     private final EntityService<AssetBase> assetService;
     
     @Inject
-    public RemoveAsset(EntityService<DirectoryBase> directoryService, EntityService<AssetBase> assetService) {
+    public RemoveAsset(EntityService<DirectoryBase> directoryService, 
+        EntityService<AssetBase> assetService) {
         this.directoryService = Preconditions.checkNotNull(directoryService, "DirectoryService");
         this.assetService = Preconditions.checkNotNull(assetService, "AssetService");
     }
@@ -76,14 +77,10 @@ public final class RemoveAsset implements IpcCommand {
         final long directoryId = arguments.getLong(DIRECTORY_ID);
         final DirectoryBase directory = directoryService.read(directoryId);
         
-        if (directory == null) {
-            throw new PersistenceException(String.format("No directory found with id %s", directoryId));
-        }
-        
         final long assetId = arguments.getLong(ASSET_ID);
         final AssetBase asset = assetService.reference(assetId);
         
-        directory.remove(asset);
+        directory.getAssets().remove(asset);
         
         directoryService.update(directory);
     }

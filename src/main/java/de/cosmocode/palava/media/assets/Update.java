@@ -113,10 +113,6 @@ public final class Update implements IpcCommand {
 
         final AssetBase asset = service.read(assetId);
 
-        if (asset == null) {
-            throw new PersistenceException(String.format("No asset found with id %s", assetId));
-        }
-
         final String title = arguments.getString(TITLE, null);
         final String description = arguments.getString(DESCRIPTION, null);
         final Map<Object, Object> metaData = arguments.getMap(META_DATA, null);
