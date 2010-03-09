@@ -19,10 +19,13 @@
 
 package de.cosmcode.palava.media;
 
+import java.util.Map;
+
 import com.google.common.collect.ImmutableSet;
 
 import de.cosmocode.palava.media.AbstractAsset;
 import de.cosmocode.palava.media.AssetBase;
+import de.cosmocode.palava.media.AssetMetaData;
 
 /**
  * Dummy implementation of the {@link AssetBase} interface
@@ -41,5 +44,17 @@ public final class ConcreteAsset extends AbstractAsset {
     public ImmutableSet<ConcreteDirectory> getDirectories() {
         return ImmutableSet.of();
     }
+
+    @Override
+    protected Map<String, AssetMetaData> getInternalMetaData() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    protected AssetMetaData newAssetMetaData(AssetBase asset, String key, String value) {
+        throw new UnsupportedOperationException();
+    }
+    
+    
 
 }

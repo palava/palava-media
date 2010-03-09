@@ -69,14 +69,14 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
     @Temporal(TemporalType.TIMESTAMP)
     private Date expiresAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "asset")
-    @MapKey(name = "key")
-    private Map<String, AssetMetaData> metaData = Maps.newHashMap();
-
     // hidden adapter for metaData
     @Transient
     private final transient Map<String, String> adapter = new MetaDataAdapter();
 
+    protected abstract Map<String, AssetMetaData> getInternalMetaData();
+    
+    protected abstract AssetMetaData newAssetMetaData(AssetBase asset, String key, String value);
+    
     /**
      * A map adapter for {@link AbstractAsset#metaData} which translates
      * from String to {@link AssetMetaData} and vice versa.
@@ -91,12 +91,12 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
 
                 @Override
                 public Iterator<Entry<String, String>> iterator() {
-                    return Iterators.transform(metaData.entrySet().iterator(), FUNCTION);
+                    return Iterators.transform(getInternalMetaData().entrySet().iterator(), FUNCTION);
                 }
 
                 @Override
                 public int size() {
-                    return metaData.size();
+                    return getInternalMetaData().size();
                 }
                 
             };
@@ -104,10 +104,10 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
         
         @Override
         public String put(String key, String value) {
-            final AssetMetaData old = metaData.get(key);
+            final AssetMetaData old = getInternalMetaData().get(key);
             if (old == null) {
-                final AssetMetaData data = new AssetMetaData(AbstractAsset.this, key, value);
-                metaData.put(key, data);
+                final AssetMetaData data = newAssetMetaData(AbstractAsset.this, key, value);
+                getInternalMetaData().put(key, data);
                 return null;
             } else {
                 final String oldValue = old.getValue();
