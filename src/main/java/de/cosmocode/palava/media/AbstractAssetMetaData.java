@@ -32,7 +32,7 @@ import javax.persistence.MappedSuperclass;
  * @author Tobias Sarnowski
  */
 @MappedSuperclass
-public abstract class AssetMetaData {
+public abstract class AbstractAssetMetaData {
 
     @Id
     private String value;

@@ -40,7 +40,7 @@ import de.cosmocode.palava.model.base.AbstractEntity;
 
 /**
  * Abstract base implementation of the {@link AssetBase} interface
- * which uses {@link AssetMetaData} to provide JPA compliant
+ * which uses {@link AbstractAssetMetaData} to provide JPA compliant
  * mapping functionality.
  *
  * @author Willi Schoenborn
@@ -48,11 +48,11 @@ import de.cosmocode.palava.model.base.AbstractEntity;
 @MappedSuperclass
 public abstract class AbstractAsset extends AbstractEntity implements AssetBase {
 
-    private static final Function<Entry<String, AssetMetaData>, Entry<String, String>> FUNCTION =
-        new Function<Entry<String, AssetMetaData>, Entry<String, String>>() {
+    private static final Function<Entry<String, AbstractAssetMetaData>, Entry<String, String>> FUNCTION =
+        new Function<Entry<String, AbstractAssetMetaData>, Entry<String, String>>() {
             
             @Override
-            public Entry<String, String> apply(Entry<String, AssetMetaData> from) {
+            public Entry<String, String> apply(Entry<String, AbstractAssetMetaData> from) {
                 return Maps.immutableEntry(from.getKey(), from.getValue().getValue());
             }
             
@@ -73,13 +73,13 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
     @Transient
     private final transient Map<String, String> adapter = new MetaDataAdapter();
 
-    protected abstract Map<String, AssetMetaData> getInternalMetaData();
+    protected abstract Map<String, AbstractAssetMetaData> getInternalMetaData();
     
-    protected abstract AssetMetaData newAssetMetaData(AssetBase asset, String key, String value);
+    protected abstract AbstractAssetMetaData newAssetMetaData(AssetBase asset, String key, String value);
     
     /**
      * A map adapter for {@link AbstractAsset#metaData} which translates
-     * from String to {@link AssetMetaData} and vice versa.
+     * from String to {@link AbstractAssetMetaData} and vice versa.
      *
      * @author Willi Schoenborn
      */
@@ -104,9 +104,9 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
         
         @Override
         public String put(String key, String value) {
-            final AssetMetaData old = getInternalMetaData().get(key);
+            final AbstractAssetMetaData old = getInternalMetaData().get(key);
             if (old == null) {
-                final AssetMetaData data = newAssetMetaData(AbstractAsset.this, key, value);
+                final AbstractAssetMetaData data = newAssetMetaData(AbstractAsset.this, key, value);
                 getInternalMetaData().put(key, data);
                 return null;
             } else {

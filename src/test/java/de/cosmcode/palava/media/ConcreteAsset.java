@@ -25,7 +25,7 @@ import com.google.common.collect.ImmutableSet;
 
 import de.cosmocode.palava.media.AbstractAsset;
 import de.cosmocode.palava.media.AssetBase;
-import de.cosmocode.palava.media.AssetMetaData;
+import de.cosmocode.palava.media.AbstractAssetMetaData;
 
 /**
  * Dummy implementation of the {@link AssetBase} interface
@@ -46,12 +46,12 @@ public final class ConcreteAsset extends AbstractAsset {
     }
 
     @Override
-    protected Map<String, AssetMetaData> getInternalMetaData() {
+    protected Map<String, AbstractAssetMetaData> getInternalMetaData() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    protected AssetMetaData newAssetMetaData(AssetBase asset, String key, String value) {
+    protected AbstractAssetMetaData newAssetMetaData(AssetBase asset, String key, String value) {
         throw new UnsupportedOperationException();
     }
     
