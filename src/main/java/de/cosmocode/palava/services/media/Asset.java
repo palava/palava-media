@@ -334,6 +334,7 @@ public class Asset implements AssetBase, Copyable<Asset>, JSONEncoder, Convertib
         asset.setDeletedAt(this.getDeletedAt());
         asset.setExpiresAt(this.getExpiresAt());
         asset.setExpiresNever(this.getExpiresNever());
+        asset.metaData = this.metaData;
         asset.setName(this.getName());
         asset.setTitle(this.getTitle());
         asset.setDescription(this.getDescription());
