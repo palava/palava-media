@@ -49,6 +49,7 @@ import de.cosmocode.palava.bridge.content.StreamContent;
 import de.cosmocode.palava.media.AbstractAsset;
 import de.cosmocode.palava.media.AssetBase;
 import de.cosmocode.palava.media.DirectoryBase;
+import de.cosmocode.palava.model.base.Copyable;
 import de.cosmocode.palava.model.base.EntityBase;
 
 /**
@@ -60,7 +61,7 @@ import de.cosmocode.palava.model.base.EntityBase;
  */
 @Deprecated
 @Entity
-public class Asset implements AssetBase, JSONEncoder, Convertible {
+public class Asset implements AssetBase, Copyable<Asset>, JSONEncoder, Convertible {
     
     /**
      * @deprecated use {@code EntityBase.ORDER_BY_AGE.reverse()} instead
@@ -322,6 +323,30 @@ public class Asset implements AssetBase, JSONEncoder, Convertible {
         } else {
             return isExpired();
         }
+    }
+    
+    @Override
+    public Asset copy() {
+        final Asset asset = new Asset();
+        
+        asset.setCreatedAt(this.getCreatedAt());
+        asset.setModifiedAt(this.getModifiedAt());
+        asset.setDeletedAt(this.getDeletedAt());
+        asset.setExpiresAt(this.getExpiresAt());
+        asset.setExpiresNever(this.getExpiresNever());
+        asset.setName(this.getName());
+        asset.setTitle(this.getTitle());
+        asset.setDescription(this.getDescription());
+        
+        try {
+            asset.setContent(this.getContent());
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+        
+        return asset;
     }
 
     /**
