@@ -28,17 +28,17 @@ import javax.persistence.MappedSuperclass;
 /**
  * An helper entity required by jpa to allow
  * mapping of {@link Map}s.
- * 
+ *
  * @author Tobias Sarnowski
  */
 @MappedSuperclass
 public abstract class AbstractAssetMetaData {
 
     @Id
-    private String value;
-
     @Column(name = "meta_key", nullable = false)
     private String key;
+
+    private String value;
 
     public abstract AssetBase getAsset();
 
