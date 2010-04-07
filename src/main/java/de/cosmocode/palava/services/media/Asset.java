@@ -186,6 +186,16 @@ public class Asset implements AssetBase, Copyable<Asset>, JSONEncoder, Convertib
     }
 
     @Override
+    public String getStoreIdentifier() {
+        return storeKey;
+    }
+    
+    @Override
+    public void setStoreIdentifier(String storeIdentifier) {
+        this.storeKey = storeIdentifier;
+    }
+    
+    @Override
     public String getTitle() {
         return title;
     }
@@ -259,31 +269,44 @@ public class Asset implements AssetBase, Copyable<Asset>, JSONEncoder, Convertib
         return content;
     }
     
-    public void setContent( StreamContent content ) throws SQLException, IOException {
+    /**
+     * 
+     * 
+     * @param content
+     * @throws SQLException
+     * @throws IOException
+     */
+    public void setContent(StreamContent content) throws SQLException, IOException {
         this.content = content;
         
         this.mime = content.getMimeType() == null ? MimeType.IMAGE.toString() : content.getMimeType().toString();
         this.length = content.getLength();
-        /*
-        byte [] buffer = new byte[(int) length];
-        
-        content.getInputStream().read(buffer,0,buffer.length);
-
-        blb = Hibernate.createBlob(buffer);
-*/
-        
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * Retrieves the store key.
+     * 
+     * @deprecated use {@link Asset#getStoreIdentifier()} instead
+     * @return the current store key
+     */
+    @Deprecated
     public String getStoreKey() {
-        return storeKey;
+        return getStoreIdentifier();
     }
 
+    /**
+     * Sets the store key.
+     * 
+     * @deprecated use {@link Asset#setStoreIdentifier(String)} instead.
+     * @param storeKey the new storeKey
+     */
+    @Deprecated
     public void setStoreKey(String storeKey) {
-        this.storeKey = storeKey;
+        setStoreIdentifier(storeKey);
     }
 
     public Date getExpirationDate() {

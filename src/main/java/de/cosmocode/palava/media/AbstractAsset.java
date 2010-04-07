@@ -60,6 +60,9 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
     
     private String name;
 
+    @Column(name = "store_identifier")
+    private String storeIdentifier;
+    
     private String title;
 
     // TODO text/mediumtext
@@ -128,6 +131,16 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
         this.name = TrimMode.NULL.apply(name);
     }
 
+    @Override
+    public String getStoreIdentifier() {
+        return storeIdentifier;
+    }
+    
+    @Override
+    public void setStoreIdentifier(String storeIdentifier) {
+        this.storeIdentifier = storeIdentifier;
+    }
+    
     @Override
     public String getTitle() {
         return title;

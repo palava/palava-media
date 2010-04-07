@@ -47,6 +47,10 @@ public interface AssetBase extends EntityBase, JSONMapable {
     String getName();
 
     void setName(String name);
+    
+    String getStoreIdentifier();
+    
+    void setStoreIdentifier(String storeIdentifier);
 
     String getTitle();
 
