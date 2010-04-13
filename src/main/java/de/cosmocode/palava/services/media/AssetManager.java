@@ -138,8 +138,8 @@ public class AssetManager {
             session.flush();
             tx.commit();
         } catch ( Exception e) {
+            log.error("Unable to delete asset", e);
             tx.rollback();
-            e.printStackTrace();
             return Boolean.FALSE;
         }
         return Boolean.TRUE;
