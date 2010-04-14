@@ -121,14 +121,18 @@ public class AssetManager {
     public Boolean removeAssetById (Long id) throws Exception {
         Asset asset = this.getAsset (id, false);
         
+        log.debug("found asset: {} for id {}", asset, id);
+        
         Set<Long> dirIds = this.getDirectoryIdsForAsset (id).keySet();
         for (Long dirId : dirIds) {
             // if deletion on any directory that contains this asset fails for any reason,
             // then abort the whole deletion of this asset at once
             log.info("Currently removing asset with id {} from directory with id {}", id, dirId);
             Directory directory = getDirectory (dirId);
-            if ( ! directory.getAssets().remove(asset) )
+            if ( ! directory.getAssets().remove(asset) ) {
+                log.warn("Could not remove asset {} from directory {}", asset, dirId);
                 return Boolean.FALSE;
+            }
             session.saveOrUpdate (directory);
         }
 
@@ -198,8 +202,10 @@ public class AssetManager {
     public Boolean removeAssetFromDirectory ( Long directoryId, Long assetId) throws Exception {
         Directory directory = (Directory) session.load(Directory.class, directoryId);
         Asset asset = (Asset) session.load(Asset.class, assetId);
-        if (!directory.getAssets().remove(asset))
+        if (!directory.getAssets().remove(asset)) {
+            log.warn("Could not remove asset {} from directory {}", asset, directoryId);
             return Boolean.FALSE;
+        }
         
 
         Transaction tx = session.beginTransaction();
