@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package de.cosmocode.palava.media.assets;
+package de.cosmocode.palava.media.asset;
 
 import java.util.Date;
 import java.util.Map;
@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import de.cosmocode.palava.entity.EntityService;
@@ -42,7 +43,6 @@ import de.cosmocode.palava.ipc.IpcCommand.Param;
 import de.cosmocode.palava.ipc.IpcCommand.Params;
 import de.cosmocode.palava.ipc.IpcCommand.Throw;
 import de.cosmocode.palava.ipc.IpcCommand.Throws;
-import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.AssetBase;
 
 /**
@@ -50,9 +50,8 @@ import de.cosmocode.palava.media.AssetBase;
  *
  * @author Willi Schoenborn
  */
-@Description("Updates an asset in the database. Default values will overwrite values from the datastore.")
+@Description("Creates an asset in the database.")
 @Params({
-    @Param(name = Update.ASSET_ID, description = "The identifier of the asset"),
     @Param(
         name = Update.TITLE,
         type = "string",
@@ -86,22 +85,22 @@ import de.cosmocode.palava.media.AssetBase;
     @Throw(name = NullPointerException.class, description = "If metaData contains null keys"),
     @Throw(name = PersistenceException.class, description = "If no asset with the given id exists or update failed")
 })
-@Transactional
 @Singleton
-public final class Update implements IpcCommand {
+public final class Create implements IpcCommand {
 
-    public static final String ASSET_ID = "assetId";
     public static final String TITLE = "title";
     public static final String DESCRIPTION = "description";
     public static final String META_DATA = "metaData";
     public static final String EXPIRES_AT = "expiresAt";
 
-    private static final Logger LOG = LoggerFactory.getLogger(Update.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Create.class);
 
+    private final Provider<AssetBase> provider;
     private final EntityService<AssetBase> service;
 
     @Inject
-    public Update(EntityService<AssetBase> service) {
+    public Create(Provider<AssetBase> provider, EntityService<AssetBase> service) {
+        this.provider = Preconditions.checkNotNull(provider, "Provider");
         this.service = Preconditions.checkNotNull(service, "Service");
     }
 
@@ -109,9 +108,7 @@ public final class Update implements IpcCommand {
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final IpcArguments arguments = call.getArguments();
 
-        final long assetId = arguments.getLong(ASSET_ID);
-
-        final AssetBase asset = service.read(assetId);
+        final AssetBase asset = provider.get();
 
         final String title = arguments.getString(TITLE, null);
         final String description = arguments.getString(DESCRIPTION, null);
@@ -122,7 +119,7 @@ public final class Update implements IpcCommand {
         asset.setDescription(description);
 
         asset.getMetaData().clear();
-
+        
         if (metaData == null) {
             LOG.debug("No meta data received");
         } else {
@@ -138,7 +135,7 @@ public final class Update implements IpcCommand {
 
         asset.setExpiresAt(expiresAt);
 
-        service.update(asset);
+        service.create(asset);
     }
 
 }

@@ -17,8 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package de.cosmocode.palava.media.directories;
+package de.cosmocode.palava.media.directory;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.PersistenceException;
@@ -47,19 +48,20 @@ import de.cosmocode.palava.media.DirectoryBase;
  */
 @Description("Adds the specified asset to the given directory")
 @Params({
-    @Param(name = AddAsset.DIRECTORY_ID, description = "The identifier of the directory"),
-    @Param(name = AddAsset.ASSET_ID, description = "The identifier of the asset")
+    @Param(name = DirectoryCommands.DIRECTORY_ID, description = "The identifier of the directory"),
+    @Param(name = DirectoryCommands.ASSET_ID, description = "The identifier of the asset"),
+    @Param(
+        name = DirectoryCommands.INDEX, type = "positive int",  
+        description = "The desired index of the asset in the directory. A value of -1 adds the asset to the end.",
+        optional = true, defaultValue = "-1" 
+    )
 })
 @Throw(
     name = PersistenceException.class, 
-    description = "If asset or directory does not exist or updating failed"
+    description = "If directory does not exist or updating failed"
 )
-@Transactional
 @Singleton
 public final class AddAsset implements IpcCommand {
-
-    public static final String DIRECTORY_ID = "directoryId";
-    public static final String ASSET_ID = "assetId";
     
     private final EntityService<DirectoryBase> directoryService;
     private final EntityService<AssetBase> assetService;
@@ -70,17 +72,25 @@ public final class AddAsset implements IpcCommand {
         this.assetService = Preconditions.checkNotNull(assetService, "AssetService");
     }
 
+    @Transactional
     @Override
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final IpcArguments arguments = call.getArguments();
         
-        final long directoryId = arguments.getLong(DIRECTORY_ID);
-        final DirectoryBase directory = directoryService.read(directoryId);
+        final long directoryId = arguments.getLong(DirectoryCommands.DIRECTORY_ID);
+        final long assetId = arguments.getLong(DirectoryCommands.ASSET_ID);
+        final int index = arguments.getInt(DirectoryCommands.INDEX, -1);
         
-        final long assetId = arguments.getLong(ASSET_ID);
+        final DirectoryBase directory = directoryService.read(directoryId);
         final AssetBase asset = assetService.reference(assetId);
         
-        directory.getAssets().add(asset);
+        final List<AssetBase> assets = directory.getAssets();
+        
+        if (index == -1) {
+            assets.add(asset);
+        } else {
+            assets.add(index, asset);
+        }
         
         directoryService.update(directory);
     }

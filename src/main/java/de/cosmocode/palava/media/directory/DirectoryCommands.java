@@ -14,28 +14,31 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  */
 
-package de.cosmocode.palava.media.assets;
+package de.cosmocode.palava.media.directory;
 
-import java.util.Map;
+import de.cosmocode.palava.media.DirectoryBase;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+/**
+ * Constants for {@link DirectoryBase} commands.
+ *
+ * @author Willi Schoenborn
+ */
+public final class DirectoryCommands {
 
-import de.cosmocode.palava.ipc.IpcCall;
-import de.cosmocode.palava.ipc.IpcCommand;
-import de.cosmocode.palava.ipc.IpcCommandExecutionException;
+    // parameters
+    public static final String DIRECTORY_ID = "directoryId";
+    public static final String ASSET_ID = "assetId";
+    public static final String INDEX = "index";
 
-public final class Delete implements IpcCommand {
-
-    private static final Logger LOG = LoggerFactory.getLogger(Delete.class);
-
-    @Override
-    public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
-        // TODO Auto-generated method stub
-
+    // return values
+    public static final String DIRECTORY = "directory";
+    
+    private DirectoryCommands() {
+        
     }
 
 }

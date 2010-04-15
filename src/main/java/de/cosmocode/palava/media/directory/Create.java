@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package de.cosmocode.palava.media.directories;
+package de.cosmocode.palava.media.directory;
 
 import java.util.Map;
 
@@ -25,16 +25,17 @@ import javax.persistence.PersistenceException;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import de.cosmocode.palava.entity.EntityService;
-import de.cosmocode.palava.ipc.IpcArguments;
 import de.cosmocode.palava.ipc.IpcCall;
 import de.cosmocode.palava.ipc.IpcCommand;
 import de.cosmocode.palava.ipc.IpcCommandExecutionException;
 import de.cosmocode.palava.ipc.IpcCommand.Description;
-import de.cosmocode.palava.ipc.IpcCommand.Param;
+import de.cosmocode.palava.ipc.IpcCommand.Return;
 import de.cosmocode.palava.ipc.IpcCommand.Throw;
+import de.cosmocode.palava.ipc.IpcCommand.Throws;
 import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.DirectoryBase;
 
@@ -43,28 +44,29 @@ import de.cosmocode.palava.media.DirectoryBase;
  *
  * @author Willi Schoenborn
  */
-@Description("Deletes a directory from the database. Assets in the given directory will NOT be deleted.")
-@Param(name = Delete.DIRECTORY_ID, description = "The identifier of the directory")
-@Throw(name = PersistenceException.class, description = "If there is no directory with the given id")
-@Transactional
+@Description("Creates a new directory")
+@Return(name = DirectoryCommands.DIRECTORY, description = "The created directory")
+@Throws({
+    @Throw(name = PersistenceException.class, description = "If creating failed")
+})
 @Singleton
-public final class Delete implements IpcCommand {
-
-    public static final String DIRECTORY_ID = "directoryId";
+public final class Create implements IpcCommand {
     
     private final EntityService<DirectoryBase> service;
+    private final Provider<DirectoryBase> provider;
     
     @Inject
-    public Delete(EntityService<DirectoryBase> service) {
+    public Create(EntityService<DirectoryBase> service, Provider<DirectoryBase> provider) {
         this.service = Preconditions.checkNotNull(service, "Service");
+        this.provider = Preconditions.checkNotNull(provider, "Provider");
     }
-
+    
+    @Transactional
     @Override
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
-        final IpcArguments arguments = call.getArguments();
-        final long directoryId = arguments.getLong(DIRECTORY_ID);
-        final DirectoryBase directory = service.read(directoryId);
-        service.delete(directory);
+        final DirectoryBase directory = provider.get();
+        service.create(directory);
+        result.put(DirectoryCommands.DIRECTORY, directory);
     }
 
 }

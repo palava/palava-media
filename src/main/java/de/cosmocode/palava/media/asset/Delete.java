@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package de.cosmocode.palava.media.directories;
+package de.cosmocode.palava.media.asset;
 
 import java.util.Map;
 
@@ -34,55 +34,35 @@ import de.cosmocode.palava.ipc.IpcCommand;
 import de.cosmocode.palava.ipc.IpcCommandExecutionException;
 import de.cosmocode.palava.ipc.IpcCommand.Description;
 import de.cosmocode.palava.ipc.IpcCommand.Param;
-import de.cosmocode.palava.ipc.IpcCommand.Params;
 import de.cosmocode.palava.ipc.IpcCommand.Throw;
-import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.AssetBase;
-import de.cosmocode.palava.media.DirectoryBase;
+
 /**
  * See below.
  *
  * @author Willi Schoenborn
  */
-@Description("Removes the specified asset from the given directory")
-@Params({
-    @Param(name = AddAsset.DIRECTORY_ID, description = "The identifier of the directory"),
-    @Param(name = AddAsset.ASSET_ID, description = "The identifier of the asset")
-})
-@Throw(
-    name = PersistenceException.class, 
-    description = "If asset or directory does not exist or updating failed"
-)
-@Transactional
+@Description("Deletes an asset from the database")
+@Param(name = Delete.ASSET_ID, description = "The asset's identifier")
+@Throw(name = PersistenceException.class, description = "If there is no asset with the given id or deletion failed")
 @Singleton
-public final class RemoveAsset implements IpcCommand {
+public final class Delete implements IpcCommand {
 
-    public static final String DIRECTORY_ID = "directoryId";
     public static final String ASSET_ID = "assetId";
-    
-    private final EntityService<DirectoryBase> directoryService;
-    private final EntityService<AssetBase> assetService;
-    
+
+    private final EntityService<AssetBase> service;
+
     @Inject
-    public RemoveAsset(EntityService<DirectoryBase> directoryService, 
-        EntityService<AssetBase> assetService) {
-        this.directoryService = Preconditions.checkNotNull(directoryService, "DirectoryService");
-        this.assetService = Preconditions.checkNotNull(assetService, "AssetService");
+    public Delete(EntityService<AssetBase> service) {
+        this.service = Preconditions.checkNotNull(service, "Service");
     }
 
     @Override
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final IpcArguments arguments = call.getArguments();
-        
-        final long directoryId = arguments.getLong(DIRECTORY_ID);
-        final DirectoryBase directory = directoryService.read(directoryId);
-        
         final long assetId = arguments.getLong(ASSET_ID);
-        final AssetBase asset = assetService.reference(assetId);
-        
-        directory.getAssets().remove(asset);
-        
-        directoryService.update(directory);
+        final AssetBase asset = service.read(assetId);
+        service.delete(asset);
     }
 
 }

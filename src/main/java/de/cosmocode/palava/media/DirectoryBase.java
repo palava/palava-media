@@ -19,7 +19,7 @@
 
 package de.cosmocode.palava.media;
 
-import java.util.Collection;
+import java.util.List;
 
 import de.cosmocode.json.JSONMapable;
 import de.cosmocode.palava.model.base.EntityBase;
@@ -30,6 +30,6 @@ public interface DirectoryBase extends EntityBase, JSONMapable {
      * 
      * @return
      */
-    <A extends AssetBase> Collection<A> getAssets();
+    <A extends AssetBase> List<A> getAssets();
     
 }
