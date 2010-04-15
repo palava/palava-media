@@ -36,7 +36,8 @@ import de.cosmocode.palava.ipc.IpcCall;
 import de.cosmocode.palava.ipc.IpcCommandExecutionException;
 import de.cosmocode.palava.media.AssetBase;
 import de.cosmocode.palava.media.DirectoryBase;
-import de.cosmocode.palava.media.directory.DirectoryCommands;
+import de.cosmocode.palava.media.asset.AssetConstants;
+import de.cosmocode.palava.media.directory.DirectoryConstants;
 import de.cosmocode.palava.media.directory.SetAsset;
 
 /**
@@ -92,9 +93,9 @@ public final class SetAssetTest {
         final IpcCall call = EasyMock.createMock("call", IpcCall.class);
         final IpcArguments arguments = EasyMock.createMock("arguments", IpcArguments.class);
         EasyMock.expect(call.getArguments()).andReturn(arguments);
-        EasyMock.expect(arguments.getLong(DirectoryCommands.DIRECTORY_ID)).andReturn(1L);
-        EasyMock.expect(arguments.getLong(DirectoryCommands.ASSET_ID)).andReturn(1L);
-        EasyMock.expect(arguments.getInt(DirectoryCommands.INDEX)).andReturn(index);
+        EasyMock.expect(arguments.getLong(DirectoryConstants.DIRECTORY_ID)).andReturn(1L);
+        EasyMock.expect(arguments.getLong(AssetConstants.ASSET_ID)).andReturn(1L);
+        EasyMock.expect(arguments.getInt(DirectoryConstants.INDEX)).andReturn(index);
         
         EasyMock.replay(call, arguments);
         

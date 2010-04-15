@@ -36,10 +36,12 @@ import de.cosmocode.palava.ipc.IpcCommandExecutionException;
 import de.cosmocode.palava.ipc.IpcCommand.Description;
 import de.cosmocode.palava.ipc.IpcCommand.Param;
 import de.cosmocode.palava.ipc.IpcCommand.Params;
+import de.cosmocode.palava.ipc.IpcCommand.Return;
 import de.cosmocode.palava.ipc.IpcCommand.Throw;
 import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.AssetBase;
 import de.cosmocode.palava.media.DirectoryBase;
+import de.cosmocode.palava.media.asset.AssetConstants;
 
 /**
  * See below.
@@ -48,14 +50,15 @@ import de.cosmocode.palava.media.DirectoryBase;
  */
 @Description("Adds the specified asset to the given directory")
 @Params({
-    @Param(name = DirectoryCommands.DIRECTORY_ID, description = "The identifier of the directory"),
-    @Param(name = DirectoryCommands.ASSET_ID, description = "The identifier of the asset"),
+    @Param(name = DirectoryConstants.DIRECTORY_ID, description = "The identifier of the directory"),
+    @Param(name = AssetConstants.ASSET_ID, description = "The identifier of the asset"),
     @Param(
-        name = DirectoryCommands.INDEX, type = "positive int",  
+        name = DirectoryConstants.INDEX, type = "positive int",  
         description = "The desired index of the asset in the directory. A value of -1 adds the asset to the end.",
         optional = true, defaultValue = "-1" 
     )
 })
+@Return(name = DirectoryConstants.CURRENT_INDEX, description = "The current index of the asset")
 @Throw(
     name = PersistenceException.class, 
     description = "If directory does not exist or updating failed"
@@ -77,22 +80,28 @@ public final class AddAsset implements IpcCommand {
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final IpcArguments arguments = call.getArguments();
         
-        final long directoryId = arguments.getLong(DirectoryCommands.DIRECTORY_ID);
-        final long assetId = arguments.getLong(DirectoryCommands.ASSET_ID);
-        final int index = arguments.getInt(DirectoryCommands.INDEX, -1);
+        final long directoryId = arguments.getLong(DirectoryConstants.DIRECTORY_ID);
+        final long assetId = arguments.getLong(AssetConstants.ASSET_ID);
+        final int index = arguments.getInt(DirectoryConstants.INDEX, -1);
         
         final DirectoryBase directory = directoryService.read(directoryId);
         final AssetBase asset = assetService.reference(assetId);
         
         final List<AssetBase> assets = directory.getAssets();
         
+        final int currentIndex;
+        
         if (index == -1) {
+            currentIndex = assets.size();
             assets.add(asset);
         } else {
+            currentIndex = index;
             assets.add(index, asset);
         }
         
         directoryService.update(directory);
+        
+        result.put(DirectoryConstants.CURRENT_INDEX, currentIndex);
     }
 
 }

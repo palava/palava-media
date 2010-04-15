@@ -36,6 +36,7 @@ import de.cosmocode.palava.ipc.IpcCommand.Description;
 import de.cosmocode.palava.ipc.IpcCommand.Param;
 import de.cosmocode.palava.ipc.IpcCommand.Return;
 import de.cosmocode.palava.ipc.IpcCommand.Throw;
+import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.DirectoryBase;
 
 /**
@@ -44,8 +45,8 @@ import de.cosmocode.palava.media.DirectoryBase;
  * @author Willi Schoenborn
  */
 @Description("Reads a directory from the database")
-@Param(name = DirectoryCommands.DIRECTORY_ID, description = "The identifier of the directory")
-@Return(name = DirectoryCommands.DIRECTORY, description = "The found directory")
+@Param(name = DirectoryConstants.DIRECTORY_ID, description = "The identifier of the directory")
+@Return(name = DirectoryConstants.DIRECTORY, description = "The found directory")
 @Throw(name = PersistenceException.class, description = "If there is no directory with the given id")
 @Singleton
 public final class Read implements IpcCommand {
@@ -57,12 +58,13 @@ public final class Read implements IpcCommand {
         this.service = Preconditions.checkNotNull(service, "Service");
     }
 
+    @Transactional
     @Override
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final IpcArguments arguments = call.getArguments();
-        final long directoryId = arguments.getLong(DirectoryCommands.DIRECTORY_ID);
+        final long directoryId = arguments.getLong(DirectoryConstants.DIRECTORY_ID);
         final DirectoryBase directory = service.read(directoryId);
-        result.put(DirectoryCommands.DIRECTORY, directory);
+        result.put(DirectoryConstants.DIRECTORY, directory);
     }
 
 }

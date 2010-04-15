@@ -39,6 +39,7 @@ import de.cosmocode.palava.ipc.IpcCommand.Throw;
 import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.AssetBase;
 import de.cosmocode.palava.media.DirectoryBase;
+import de.cosmocode.palava.media.asset.AssetConstants;
 /**
  * See below.
  *
@@ -46,8 +47,8 @@ import de.cosmocode.palava.media.DirectoryBase;
  */
 @Description("Removes the specified asset from the given directory")
 @Params({
-    @Param(name = DirectoryCommands.DIRECTORY_ID, description = "The identifier of the directory"),
-    @Param(name = DirectoryCommands.ASSET_ID, description = "The identifier of the asset")
+    @Param(name = DirectoryConstants.DIRECTORY_ID, description = "The identifier of the directory"),
+    @Param(name = AssetConstants.ASSET_ID, description = "The identifier of the asset")
 })
 @Throw(
     name = PersistenceException.class, 
@@ -71,8 +72,8 @@ public final class RemoveAsset implements IpcCommand {
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final IpcArguments arguments = call.getArguments();
         
-        final long directoryId = arguments.getLong(DirectoryCommands.DIRECTORY_ID);
-        final long assetId = arguments.getLong(DirectoryCommands.ASSET_ID);
+        final long directoryId = arguments.getLong(DirectoryConstants.DIRECTORY_ID);
+        final long assetId = arguments.getLong(AssetConstants.ASSET_ID);
         
         final DirectoryBase directory = directoryService.read(directoryId);
         final AssetBase asset = assetService.reference(assetId);

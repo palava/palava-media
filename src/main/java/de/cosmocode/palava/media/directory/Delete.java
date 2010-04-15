@@ -44,13 +44,11 @@ import de.cosmocode.palava.media.DirectoryBase;
  * @author Willi Schoenborn
  */
 @Description("Deletes a directory from the database. Assets in the given directory will NOT be deleted.")
-@Param(name = Delete.DIRECTORY_ID, description = "The identifier of the directory")
+@Param(name = DirectoryConstants.DIRECTORY_ID, description = "The identifier of the directory")
 @Throw(name = PersistenceException.class, description = "If there is no directory with the given id or deletion failed")
 @Singleton
 public final class Delete implements IpcCommand {
 
-    public static final String DIRECTORY_ID = "directoryId";
-    
     private final EntityService<DirectoryBase> service;
     
     @Inject
@@ -62,8 +60,8 @@ public final class Delete implements IpcCommand {
     @Override
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final IpcArguments arguments = call.getArguments();
-        final long directoryId = arguments.getLong(DIRECTORY_ID);
-        final DirectoryBase directory = service.read(directoryId);
+        final long directoryId = arguments.getLong(DirectoryConstants.DIRECTORY_ID);
+        final DirectoryBase directory = service.reference(directoryId);
         service.delete(directory);
     }
 

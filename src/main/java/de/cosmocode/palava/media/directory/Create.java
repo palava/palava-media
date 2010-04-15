@@ -45,7 +45,7 @@ import de.cosmocode.palava.media.DirectoryBase;
  * @author Willi Schoenborn
  */
 @Description("Creates a new directory")
-@Return(name = DirectoryCommands.DIRECTORY, description = "The created directory")
+@Return(name = DirectoryConstants.DIRECTORY, description = "The created directory")
 @Throws({
     @Throw(name = PersistenceException.class, description = "If creating failed")
 })
@@ -66,7 +66,7 @@ public final class Create implements IpcCommand {
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final DirectoryBase directory = provider.get();
         service.create(directory);
-        result.put(DirectoryCommands.DIRECTORY, directory);
+        result.put(DirectoryConstants.DIRECTORY, directory);
     }
 
 }

@@ -46,6 +46,7 @@ import de.cosmocode.palava.ipc.IpcCommand.Throws;
 import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.AssetBase;
 import de.cosmocode.palava.media.DirectoryBase;
+import de.cosmocode.palava.media.asset.AssetConstants;
 
 /**
  * See below.
@@ -57,10 +58,10 @@ import de.cosmocode.palava.media.DirectoryBase;
     "All assets left of the new position will be shifted one place to the right."
 )
 @Params({
-    @Param(name = DirectoryCommands.DIRECTORY_ID, description = "The identifier of the directory"),
-    @Param(name = DirectoryCommands.ASSET_ID, description = "The identifier of the asset"),
+    @Param(name = DirectoryConstants.DIRECTORY_ID, description = "The identifier of the directory"),
+    @Param(name = AssetConstants.ASSET_ID, description = "The identifier of the asset"),
     @Param(
-        name = DirectoryCommands.INDEX, type = "positive int", 
+        name = DirectoryConstants.INDEX, type = "positive int", 
         description = "The desired index of the asset in the directory."
     )
 })
@@ -88,9 +89,9 @@ public final class SetAsset implements IpcCommand {
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final IpcArguments arguments = call.getArguments();
         
-        final long directoryId = arguments.getLong(DirectoryCommands.DIRECTORY_ID);
-        final long assetId = arguments.getLong(DirectoryCommands.ASSET_ID);
-        final int index = arguments.getInt(DirectoryCommands.INDEX);
+        final long directoryId = arguments.getLong(DirectoryConstants.DIRECTORY_ID);
+        final long assetId = arguments.getLong(AssetConstants.ASSET_ID);
+        final int index = arguments.getInt(DirectoryConstants.INDEX);
         Preconditions.checkArgument(index >= 0, "index must not be negative, but was", index);
         
         final DirectoryBase directory = directoryService.read(directoryId);

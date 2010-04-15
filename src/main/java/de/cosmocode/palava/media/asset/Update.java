@@ -40,6 +40,7 @@ import de.cosmocode.palava.ipc.IpcCommandExecutionException;
 import de.cosmocode.palava.ipc.IpcCommand.Description;
 import de.cosmocode.palava.ipc.IpcCommand.Param;
 import de.cosmocode.palava.ipc.IpcCommand.Params;
+import de.cosmocode.palava.ipc.IpcCommand.Return;
 import de.cosmocode.palava.ipc.IpcCommand.Throw;
 import de.cosmocode.palava.ipc.IpcCommand.Throws;
 import de.cosmocode.palava.jpa.Transactional;
@@ -52,48 +53,43 @@ import de.cosmocode.palava.media.AssetBase;
  */
 @Description("Updates an asset in the database. Default values will overwrite values from the datastore.")
 @Params({
-    @Param(name = Update.ASSET_ID, description = "The identifier of the asset"),
+    @Param(name = AssetConstants.ASSET_ID, description = "The identifier of the asset"),
     @Param(
-        name = Update.TITLE,
+        name = AssetConstants.TITLE,
         type = "string",
         description = "The asset's title",
         optional = true,
         defaultValue = "null"
     ),
     @Param(
-        name = Update.DESCRIPTION,
+        name = AssetConstants.DESCRIPTION,
         type = "string",
         description = "The asset's description",
         optional = true,
         defaultValue = "null"
     ),
     @Param(
-        name = Update.META_DATA,
+        name = AssetConstants.META_DATA,
         type = "map of strings",
         description = "Flat meta data structure associated with the specified asset. Null keys are not permitted",
         optional = true,
         defaultValue = "null"
     ),
     @Param(
-        name = Update.EXPIRES_AT,
+        name = AssetConstants.EXPIRES_AT,
         type = "java timestamp (ms)",
         description = "The date the specified asset will expire",
         optional = true,
         defaultValue = "null"
     )
 })
+@Return(name = AssetConstants.ASSET, description = "The updated asset")
 @Throws({
     @Throw(name = NullPointerException.class, description = "If metaData contains null keys"),
     @Throw(name = PersistenceException.class, description = "If no asset with the given id exists or update failed")
 })
 @Singleton
 public final class Update implements IpcCommand {
-
-    public static final String ASSET_ID = "assetId";
-    public static final String TITLE = "title";
-    public static final String DESCRIPTION = "description";
-    public static final String META_DATA = "metaData";
-    public static final String EXPIRES_AT = "expiresAt";
 
     private static final Logger LOG = LoggerFactory.getLogger(Update.class);
 
@@ -109,14 +105,14 @@ public final class Update implements IpcCommand {
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final IpcArguments arguments = call.getArguments();
 
-        final long assetId = arguments.getLong(ASSET_ID);
+        final long assetId = arguments.getLong(AssetConstants.ASSET_ID);
 
         final AssetBase asset = service.read(assetId);
 
-        final String title = arguments.getString(TITLE, null);
-        final String description = arguments.getString(DESCRIPTION, null);
-        final Map<Object, Object> metaData = arguments.getMap(META_DATA, null);
-        final Date expiresAt = arguments.getDate(EXPIRES_AT, null);
+        final String title = arguments.getString(AssetConstants.TITLE, null);
+        final String description = arguments.getString(AssetConstants.DESCRIPTION, null);
+        final Map<Object, Object> metaData = arguments.getMap(AssetConstants.META_DATA, null);
+        final Date expiresAt = arguments.getDate(AssetConstants.EXPIRES_AT, null);
 
         asset.setTitle(title);
         asset.setDescription(description);
@@ -139,6 +135,8 @@ public final class Update implements IpcCommand {
         asset.setExpiresAt(expiresAt);
 
         service.update(asset);
+        
+        result.put(AssetConstants.ASSET, asset);
     }
 
 }

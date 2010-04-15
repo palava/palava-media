@@ -35,6 +35,7 @@ import de.cosmocode.palava.ipc.IpcCommandExecutionException;
 import de.cosmocode.palava.ipc.IpcCommand.Description;
 import de.cosmocode.palava.ipc.IpcCommand.Param;
 import de.cosmocode.palava.ipc.IpcCommand.Throw;
+import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.AssetBase;
 
 /**
@@ -43,12 +44,10 @@ import de.cosmocode.palava.media.AssetBase;
  * @author Willi Schoenborn
  */
 @Description("Deletes an asset from the database")
-@Param(name = Delete.ASSET_ID, description = "The asset's identifier")
+@Param(name = AssetConstants.ASSET_ID, description = "The asset's identifier")
 @Throw(name = PersistenceException.class, description = "If there is no asset with the given id or deletion failed")
 @Singleton
 public final class Delete implements IpcCommand {
-
-    public static final String ASSET_ID = "assetId";
 
     private final EntityService<AssetBase> service;
 
@@ -57,11 +56,12 @@ public final class Delete implements IpcCommand {
         this.service = Preconditions.checkNotNull(service, "Service");
     }
 
+    @Transactional
     @Override
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final IpcArguments arguments = call.getArguments();
-        final long assetId = arguments.getLong(ASSET_ID);
-        final AssetBase asset = service.read(assetId);
+        final long assetId = arguments.getLong(AssetConstants.ASSET_ID);
+        final AssetBase asset = service.reference(assetId);
         service.delete(asset);
     }
 

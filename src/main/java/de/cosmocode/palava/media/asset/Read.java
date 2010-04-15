@@ -36,6 +36,7 @@ import de.cosmocode.palava.ipc.IpcCommand.Description;
 import de.cosmocode.palava.ipc.IpcCommand.Param;
 import de.cosmocode.palava.ipc.IpcCommand.Return;
 import de.cosmocode.palava.ipc.IpcCommand.Throw;
+import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.AssetBase;
 
 /**
@@ -44,14 +45,11 @@ import de.cosmocode.palava.media.AssetBase;
  * @author Willi Schoenborn
  */
 @Description("Reads an asset from the database")
-@Param(name = Read.ASSET_ID, description = "The identifier of the asset")
-@Return(name = Read.ASSET, description = "The found asset")
+@Param(name = AssetConstants.ASSET_ID, description = "The identifier of the asset")
+@Return(name = AssetConstants.ASSET, description = "The found asset")
 @Throw(name = PersistenceException.class, description = "If there is no asset with the given identifier")
 @Singleton
 public final class Read implements IpcCommand {
-
-    public static final String ASSET_ID = "assetId";
-    public static final String ASSET = "asset";
 
     private final EntityService<AssetBase> service;
 
@@ -60,12 +58,13 @@ public final class Read implements IpcCommand {
         this.service = Preconditions.checkNotNull(service, "Service");
     }
 
+    @Transactional
     @Override
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
         final IpcArguments arguments = call.getArguments();
-        final long assetId = arguments.getLong(ASSET_ID);
+        final long assetId = arguments.getLong(AssetConstants.ASSET_ID);
         final AssetBase asset = service.read(assetId);
-        result.put(ASSET, asset);
+        result.put(AssetConstants.ASSET, asset);
     }
 
 }

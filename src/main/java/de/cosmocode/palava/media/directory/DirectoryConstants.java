@@ -27,17 +27,17 @@ import de.cosmocode.palava.media.DirectoryBase;
  *
  * @author Willi Schoenborn
  */
-public final class DirectoryCommands {
+public final class DirectoryConstants {
 
     // parameters
     public static final String DIRECTORY_ID = "directoryId";
-    public static final String ASSET_ID = "assetId";
     public static final String INDEX = "index";
 
     // return values
     public static final String DIRECTORY = "directory";
+    public static final String CURRENT_INDEX = "currentIndex";
     
-    private DirectoryCommands() {
+    private DirectoryConstants() {
         
     }
 
