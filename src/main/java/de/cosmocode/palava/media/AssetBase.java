@@ -19,6 +19,7 @@
 
 package de.cosmocode.palava.media;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Map;
 
@@ -47,6 +48,10 @@ public interface AssetBase extends EntityBase, JSONMapable {
     String getName();
 
     void setName(String name);
+    
+    InputStream getStream();
+    
+    void setStream(InputStream stream);
     
     String getStoreIdentifier();
     

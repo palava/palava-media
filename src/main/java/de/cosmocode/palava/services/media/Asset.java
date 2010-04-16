@@ -20,6 +20,7 @@
 package de.cosmocode.palava.services.media;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.Date;
@@ -281,6 +282,16 @@ public class Asset implements AssetBase, Copyable<Asset>, JSONEncoder, Convertib
         
         this.mime = content.getMimeType() == null ? MimeType.IMAGE.toString() : content.getMimeType().toString();
         this.length = content.getLength();
+    }
+    
+    @Override
+    public InputStream getStream() {
+        throw new UnsupportedOperationException();
+    }
+    
+    @Override
+    public void setStream(InputStream stream) {
+        throw new UnsupportedOperationException();        
     }
 
     public void setId(long id) {

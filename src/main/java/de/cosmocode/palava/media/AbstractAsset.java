@@ -19,6 +19,7 @@
 
 package de.cosmocode.palava.media;
 
+import java.io.InputStream;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Date;
@@ -27,9 +28,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 
@@ -60,6 +70,9 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
     
     private String name;
 
+    @Transient
+    private transient InputStream stream;
+    
     @Column(name = "store_identifier")
     private String storeIdentifier;
     
@@ -72,6 +85,16 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
     @Temporal(TemporalType.TIMESTAMP)
     private Date expiresAt;
 
+    @Override
+    public InputStream getStream() {
+        return stream;
+    }
+    
+    @Override
+    public void setStream(InputStream stream) {
+        this.stream = stream;
+    }
+    
     // hidden adapter for metaData
     @Transient
     private final transient Map<String, String> adapter = new MetaDataAdapter();
@@ -120,6 +143,24 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
         }
         
     };
+
+    private void checkIdentifier() {
+        Preconditions.checkState(StringUtils.isNotBlank(getStoreIdentifier()), "Store identifier is not set");
+    }
+    
+    @PrePersist
+    @Override
+    public void setCreated() {
+        checkIdentifier();
+        super.setCreated();
+    }
+
+    @PreUpdate
+    @Override
+    public void setModified() {
+        checkIdentifier();
+        super.setModified();
+    }
     
     @Override
     public String getName() {
@@ -138,6 +179,7 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
     
     @Override
     public void setStoreIdentifier(String storeIdentifier) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(storeIdentifier), "StoreIdentifier must not be blank");
         this.storeIdentifier = storeIdentifier;
     }
     

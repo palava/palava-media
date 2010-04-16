@@ -52,7 +52,7 @@ import de.cosmocode.palava.media.asset.AssetConstants;
 })
 @Throw(
     name = PersistenceException.class, 
-    description = "If asset or directory does not exist or updating failed"
+    description = "If asset or directory do not exist or updating failed"
 )
 @Singleton
 public final class RemoveAsset implements IpcCommand {

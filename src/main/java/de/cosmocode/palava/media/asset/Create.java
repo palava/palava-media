@@ -19,12 +19,17 @@
 
 package de.cosmocode.palava.media.asset;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.PersistenceException;
 
+import org.apache.commons.codec.binary.Base64InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,12 +55,20 @@ import de.cosmocode.palava.media.AssetBase;
 /**
  * See below.
  * 
- * TODO binary data
- *
  * @author Willi Schoenborn
  */
 @Description("Creates an asset in the database.")
 @Params({
+    @Param(
+        name = AssetConstants.NAME,
+        type = "name of the asset",
+        description = "The (file) name of the asset."
+    ),
+    @Param(
+        name = AssetConstants.BINARY,
+        type = "base64 encoded string",
+        description = "The binary data in base64 format."
+    ),
     @Param(
         name = AssetConstants.TITLE,
         type = "string",
@@ -111,11 +124,18 @@ public final class Create implements IpcCommand {
 
         final AssetBase asset = provider.get();
 
+        final String name = arguments.getString(AssetConstants.NAME);
+        final byte[] binary = arguments.getString(AssetConstants.BINARY).getBytes(Charset.forName("UTF-8"));
         final String title = arguments.getString(AssetConstants.TITLE, null);
         final String description = arguments.getString(AssetConstants.DESCRIPTION, null);
         final Map<Object, Object> metaData = arguments.getMap(AssetConstants.META_DATA, null);
         final Date expiresAt = arguments.getDate(AssetConstants.EXPIRES_AT, null);
 
+        asset.setName(name);
+        
+        final InputStream stream = new Base64InputStream(new ByteArrayInputStream(binary));
+        asset.setStream(stream);
+        
         asset.setTitle(title);
         asset.setDescription(description);
 
@@ -134,7 +154,15 @@ public final class Create implements IpcCommand {
 
         asset.setExpiresAt(expiresAt);
 
-        service.create(asset);
+        try {
+            service.create(asset);
+        } finally {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                throw new IpcCommandExecutionException(e);
+            }
+        }
         
         result.put(AssetConstants.ASSET, asset);
     }
