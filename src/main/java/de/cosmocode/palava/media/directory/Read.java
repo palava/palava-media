@@ -23,6 +23,8 @@ import java.util.Map;
 
 import javax.persistence.PersistenceException;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -38,6 +40,7 @@ import de.cosmocode.palava.ipc.IpcCommand.Return;
 import de.cosmocode.palava.ipc.IpcCommand.Throw;
 import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.DirectoryBase;
+import de.cosmocode.palava.media.MediaPermissions;
 
 /**
  * See below.
@@ -58,6 +61,7 @@ public final class Read implements IpcCommand {
         this.service = Preconditions.checkNotNull(service, "Service");
     }
 
+    @RequiresPermissions(MediaPermissions.DIRECTORY_READ)
     @Transactional
     @Override
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {

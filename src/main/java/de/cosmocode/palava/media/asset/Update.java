@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 
 import javax.persistence.PersistenceException;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +46,7 @@ import de.cosmocode.palava.ipc.IpcCommand.Throw;
 import de.cosmocode.palava.ipc.IpcCommand.Throws;
 import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.AssetBase;
+import de.cosmocode.palava.media.MediaPermissions;
 
 /**
  * See below.
@@ -100,6 +102,7 @@ public final class Update implements IpcCommand {
         this.service = Preconditions.checkNotNull(service, "Service");
     }
 
+    @RequiresPermissions(MediaPermissions.ASSET_UPDATE)
     @Transactional
     @Override
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {

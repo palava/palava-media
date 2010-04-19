@@ -23,6 +23,8 @@ import java.util.Map;
 
 import javax.persistence.PersistenceException;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -38,6 +40,7 @@ import de.cosmocode.palava.ipc.IpcCommand.Throw;
 import de.cosmocode.palava.ipc.IpcCommand.Throws;
 import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.DirectoryBase;
+import de.cosmocode.palava.media.MediaPermissions;
 
 /**
  * See below.
@@ -60,7 +63,8 @@ public final class Create implements IpcCommand {
         this.service = Preconditions.checkNotNull(service, "Service");
         this.provider = Preconditions.checkNotNull(provider, "Provider");
     }
-    
+
+    @RequiresPermissions(MediaPermissions.DIRECTORY_CREATE)
     @Transactional
     @Override
     public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
