@@ -34,6 +34,7 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.cosmocode.palava.core.Registry;
 import de.cosmocode.palava.entity.EntityService;
 import de.cosmocode.palava.ipc.IpcArguments;
 import de.cosmocode.palava.ipc.IpcCall;
@@ -52,7 +53,8 @@ import de.cosmocode.palava.media.asset.AssetConstants;
 
 /**
  * See below.
- *
+ * 
+ * @since 2.0
  * @author Willi Schoenborn
  */
 @Description(
@@ -79,11 +81,17 @@ public final class SetAsset implements IpcCommand {
     private final EntityService<DirectoryBase> directoryService;
     private final EntityService<AssetBase> assetService;
     
+    private final DirectoryPreSetAssetEvent preSetAssetEvent;
+    private final DirectoryPostSetAssetEvent postSetAssetEvent;
+    
     @Inject
     public SetAsset(EntityService<DirectoryBase> directoryService, 
-        EntityService<AssetBase> assetService) {
+        EntityService<AssetBase> assetService, Registry registry) {
         this.directoryService = Preconditions.checkNotNull(directoryService, "DirectoryService");
         this.assetService = Preconditions.checkNotNull(assetService, "AssetService");
+        Preconditions.checkNotNull(registry, "Registry");
+        this.preSetAssetEvent = registry.proxy(DirectoryPreSetAssetEvent.class);
+        this.postSetAssetEvent = registry.proxy(DirectoryPostSetAssetEvent.class);
     }
 
     @RequiresPermissions(MediaPermissions.DIRECTORY_SET_ASSET)
@@ -107,6 +115,8 @@ public final class SetAsset implements IpcCommand {
             asset, assets, index
         });
         
+        preSetAssetEvent.eventDirectoryPreSetAsset(directory, asset);
+        
         final int currentIndex = assets.indexOf(asset);
         
         if (currentIndex == index) {
@@ -119,6 +129,8 @@ public final class SetAsset implements IpcCommand {
             // rotate to the right
             Collections.rotate(assets.subList(index, currentIndex + 1), 1);
         }
+        
+        postSetAssetEvent.eventDirectoryPostSetAsset(directory, asset);
         
         LOG.trace("New state of assets: {}", assets);
     }

@@ -24,6 +24,7 @@ import de.cosmocode.palava.security.Permissions;
 /**
  * Static class for permissions constants.
  *
+ * @since 2.0
  * @author Willi Schoenborn
  */
 @Permissions

@@ -29,6 +29,7 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.cosmocode.palava.core.Registry;
 import de.cosmocode.palava.entity.EntityService;
 import de.cosmocode.palava.ipc.IpcArguments;
 import de.cosmocode.palava.ipc.IpcCall;
@@ -43,9 +44,11 @@ import de.cosmocode.palava.media.AssetBase;
 import de.cosmocode.palava.media.DirectoryBase;
 import de.cosmocode.palava.media.MediaPermissions;
 import de.cosmocode.palava.media.asset.AssetConstants;
+
 /**
  * See below.
  *
+ * @since 2.0
  * @author Willi Schoenborn
  */
 @Description("Removes the specified asset from the given directory")
@@ -63,11 +66,17 @@ public final class RemoveAsset implements IpcCommand {
     private final EntityService<DirectoryBase> directoryService;
     private final EntityService<AssetBase> assetService;
     
+    private final DirectoryRemoveAssetEvent removeAssetEvent;
+    private final DirectoryRemovedAssetEvent removedAssetEvent;
+    
     @Inject
     public RemoveAsset(EntityService<DirectoryBase> directoryService, 
-        EntityService<AssetBase> assetService) {
+        EntityService<AssetBase> assetService, Registry registry) {
         this.directoryService = Preconditions.checkNotNull(directoryService, "DirectoryService");
         this.assetService = Preconditions.checkNotNull(assetService, "AssetService");
+        Preconditions.checkNotNull(registry, "Registry");
+        this.removeAssetEvent = registry.proxy(DirectoryRemoveAssetEvent.class);
+        this.removedAssetEvent = registry.proxy(DirectoryRemovedAssetEvent.class);
     }
 
     @RequiresPermissions(MediaPermissions.DIRECTORY_SET_ASSET)
@@ -81,10 +90,13 @@ public final class RemoveAsset implements IpcCommand {
         
         final DirectoryBase directory = directoryService.read(directoryId);
         final AssetBase asset = assetService.reference(assetId);
+
+        removeAssetEvent.eventDirectoryRemoveAsset(directory, asset);
         
         directory.getAssets().remove(asset);
-        
         directoryService.update(directory);
+        
+        removedAssetEvent.eventDirectoryRemovedAsset(directory, asset);
     }
 
 }

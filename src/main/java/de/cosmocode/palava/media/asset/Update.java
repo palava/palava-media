@@ -51,6 +51,7 @@ import de.cosmocode.palava.media.MediaPermissions;
 /**
  * See below.
  *
+ * @since 2.0
  * @author Willi Schoenborn
  */
 @Description("Updates an asset in the database. Default values will overwrite values from the datastore.")
@@ -96,7 +97,7 @@ public final class Update implements IpcCommand {
     private static final Logger LOG = LoggerFactory.getLogger(Update.class);
 
     private final EntityService<AssetBase> service;
-
+    
     @Inject
     public Update(EntityService<AssetBase> service) {
         this.service = Preconditions.checkNotNull(service, "Service");
@@ -110,7 +111,7 @@ public final class Update implements IpcCommand {
 
         final long assetId = arguments.getLong(AssetConstants.ASSET_ID);
 
-        final AssetBase asset = service.read(assetId);
+        final AssetBase asset = service.reference(assetId);
 
         final String title = arguments.getString(AssetConstants.TITLE, null);
         final String description = arguments.getString(AssetConstants.DESCRIPTION, null);
@@ -135,7 +136,9 @@ public final class Update implements IpcCommand {
             }
         }
 
+        // TODO add expired
         asset.setExpiresAt(expiresAt);
+        // TODO fire unexpiredEvent if appropriate
 
         service.update(asset);
         

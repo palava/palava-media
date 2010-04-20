@@ -44,6 +44,7 @@ import de.cosmocode.palava.media.MediaPermissions;
 /**
  * See below.
  *
+ * @since 2.0
  * @author Willi Schoenborn
  */
 @Description("Deletes a directory from the database. Assets in the given directory will NOT be deleted.")

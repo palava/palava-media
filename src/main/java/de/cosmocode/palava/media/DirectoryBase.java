@@ -24,11 +24,19 @@ import java.util.List;
 import de.cosmocode.json.JSONMapable;
 import de.cosmocode.palava.model.base.EntityBase;
 
+/**
+ * Interface definition for directories.
+ *
+ * @since 2.0
+ * @author Willi Schoenborn
+ */
 public interface DirectoryBase extends EntityBase, JSONMapable {
 
     /**
+     * Returns an ordered list of all assets in this directory.
      * 
-     * @return
+     * @param <A> generic asset type
+     * @return a list of all assets
      */
     <A extends AssetBase> List<A> getAssets();
     

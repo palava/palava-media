@@ -20,17 +20,19 @@
 package de.cosmcode.palava.media;
 
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.inject.internal.Maps;
 
 import de.cosmocode.palava.media.AbstractAsset;
 import de.cosmocode.palava.media.AssetBase;
-import de.cosmocode.palava.media.AbstractAssetMetaData;
 
 /**
  * Dummy implementation of the {@link AssetBase} interface
  * which is used to check "compilability".
  *
+ * @since 2.0
  * @author Willi Schoenborn
  */
 public final class ConcreteAsset extends AbstractAsset {
@@ -39,22 +41,16 @@ public final class ConcreteAsset extends AbstractAsset {
     public long getId() {
         return 0;
     }
-    
+
     @Override
-    public ImmutableSet<ConcreteDirectory> getDirectories() {
+    @SuppressWarnings("unchecked")
+    public Set<ConcreteDirectory> getDirectories() {
         return ImmutableSet.of();
     }
-
-    @Override
-    protected Map<String, AbstractAssetMetaData> getInternalMetaData() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    protected AbstractAssetMetaData newAssetMetaData(AssetBase asset, String key, String value) {
-        throw new UnsupportedOperationException();
-    }
     
-    
+    @Override
+    public Map<String, String> getMetaData() {
+        return Maps.newHashMap();
+    }
 
 }

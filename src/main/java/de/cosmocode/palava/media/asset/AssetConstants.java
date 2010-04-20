@@ -25,6 +25,7 @@ import de.cosmocode.palava.media.AssetBase;
 /**
  * Constants for {@link AssetBase} commands.
  *
+ * @since 2.0
  * @author Willi Schoenborn
  */
 public final class AssetConstants {

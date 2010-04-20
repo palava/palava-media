@@ -14,26 +14,27 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  */
 
-package de.cosmocode.palava.media;
+package de.cosmocode.palava.media.asset;
 
-import de.cosmocode.json.JSONRenderer;
-import de.cosmocode.palava.model.base.AbstractEntity;
+import de.cosmocode.palava.media.AssetBase;
 
 /**
- * 
+ * Event interface for pre asset update.
  *
+ * @since 2.0
  * @author Willi Schoenborn
  */
-public abstract class AbstractDirectory extends AbstractEntity implements DirectoryBase {
+public interface AssetUpdateEvent {
 
-    // TODO add level decision
-    @Override
-    public JSONRenderer renderAsMap(JSONRenderer renderer) {
-        return super.renderAsMap(renderer).
-            key("assets").array(getAssets());
-    }
+    /**
+     * Event callback.
+     * 
+     * @param asset the asset
+     */
+    void eventAssetUpdate(AssetBase asset);
 
 }

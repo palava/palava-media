@@ -14,36 +14,24 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  */
 
-package de.cosmcode.palava.media;
-
-import java.util.List;
-
-import com.google.common.collect.ImmutableList;
-
-import de.cosmocode.palava.media.DirectoryBase;
-import de.cosmocode.palava.model.base.AbstractEntity;
+package de.cosmocode.palava.media;
 
 /**
- * Dummy implementation of the {@link DirectoryBase} interface
- * which is used to check "compilability".
+ * Static constant holder class for media config key names.
  *
  * @since 2.0
  * @author Willi Schoenborn
  */
-public class ConcreteDirectory extends AbstractEntity implements DirectoryBase {
+public final class MediaConfig {
 
-    @Override
-    public long getId() {
-        return 0;
-    }
+    public static final String PREFIX = "media.";
     
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<ConcreteAsset> getAssets() {
-        return ImmutableList.of();
+    private MediaConfig() {
+        
     }
-    
+
 }

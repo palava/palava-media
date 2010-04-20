@@ -14,36 +14,29 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  */
 
-package de.cosmcode.palava.media;
+package de.cosmocode.palava.media.directory;
 
-import java.util.List;
-
-import com.google.common.collect.ImmutableList;
-
+import de.cosmocode.palava.media.AssetBase;
 import de.cosmocode.palava.media.DirectoryBase;
-import de.cosmocode.palava.model.base.AbstractEntity;
 
 /**
- * Dummy implementation of the {@link DirectoryBase} interface
- * which is used to check "compilability".
+ * Event interface for post directory set asset.
  *
  * @since 2.0
  * @author Willi Schoenborn
  */
-public class ConcreteDirectory extends AbstractEntity implements DirectoryBase {
+public interface DirectoryPostSetAssetEvent {
+    
+    /**
+     * Event callback.
+     * 
+     * @param directory the directory
+     * @param asset the asset
+     */
+    void eventDirectoryPostSetAsset(DirectoryBase directory, AssetBase asset);
 
-    @Override
-    public long getId() {
-        return 0;
-    }
-    
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<ConcreteAsset> getAssets() {
-        return ImmutableList.of();
-    }
-    
 }

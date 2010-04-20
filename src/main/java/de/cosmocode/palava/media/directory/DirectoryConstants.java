@@ -25,6 +25,7 @@ import de.cosmocode.palava.media.DirectoryBase;
 /**
  * Constants for {@link DirectoryBase} commands.
  *
+ * @since 2.0
  * @author Willi Schoenborn
  */
 public final class DirectoryConstants {

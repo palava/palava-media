@@ -57,6 +57,7 @@ import de.cosmocode.palava.media.MediaPermissions;
 /**
  * See below.
  * 
+ * @since 2.0
  * @author Willi Schoenborn
  */
 @Description("Creates an asset in the database.")

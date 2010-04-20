@@ -30,6 +30,7 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.cosmocode.palava.core.Registry;
 import de.cosmocode.palava.entity.EntityService;
 import de.cosmocode.palava.ipc.IpcArguments;
 import de.cosmocode.palava.ipc.IpcCall;
@@ -48,7 +49,8 @@ import de.cosmocode.palava.media.asset.AssetConstants;
 
 /**
  * See below.
- *
+ * 
+ * @since 2.0
  * @author Willi Schoenborn
  */
 @Description("Adds the specified asset to the given directory")
@@ -72,10 +74,17 @@ public final class AddAsset implements IpcCommand {
     private final EntityService<DirectoryBase> directoryService;
     private final EntityService<AssetBase> assetService;
     
+    private final DirectoryAddAssetEvent addAssetEvent;
+    private final DirectoryAddedAssetEvent addedAssetEvent;
+    
     @Inject
-    public AddAsset(EntityService<DirectoryBase> directoryService, EntityService<AssetBase> assetService) {
+    public AddAsset(EntityService<DirectoryBase> directoryService, EntityService<AssetBase> assetService,
+        Registry registry) {
         this.directoryService = Preconditions.checkNotNull(directoryService, "DirectoryService");
         this.assetService = Preconditions.checkNotNull(assetService, "AssetService");
+        Preconditions.checkNotNull(registry, "Registry");
+        this.addAssetEvent = registry.proxy(DirectoryAddAssetEvent.class);
+        this.addedAssetEvent = registry.proxy(DirectoryAddedAssetEvent.class);
     }
 
     @RequiresPermissions(MediaPermissions.DIRECTORY_ADD_ASSET)
@@ -91,6 +100,8 @@ public final class AddAsset implements IpcCommand {
         final DirectoryBase directory = directoryService.read(directoryId);
         final AssetBase asset = assetService.reference(assetId);
         
+        addAssetEvent.eventDirectoryAddAsset(directory, asset);
+        
         final List<AssetBase> assets = directory.getAssets();
         
         final int currentIndex;
@@ -104,6 +115,8 @@ public final class AddAsset implements IpcCommand {
         }
         
         directoryService.update(directory);
+        
+        addedAssetEvent.eventDirectoryAddedAsset(directory, asset);
         
         result.put(DirectoryConstants.CURRENT_INDEX, currentIndex);
     }

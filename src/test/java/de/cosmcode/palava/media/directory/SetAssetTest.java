@@ -27,9 +27,12 @@ import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.google.inject.Guice;
 import com.google.inject.internal.Lists;
 import com.google.inject.internal.Maps;
 
+import de.cosmocode.palava.core.DefaultRegistryModule;
+import de.cosmocode.palava.core.Registry;
 import de.cosmocode.palava.entity.EntityService;
 import de.cosmocode.palava.ipc.IpcArguments;
 import de.cosmocode.palava.ipc.IpcCall;
@@ -88,7 +91,9 @@ public final class SetAssetTest {
         
         EasyMock.replay(directory, ds);
         
-        final SetAsset unit = new SetAsset(ds, as);
+        final Registry registry = Guice.createInjector(new DefaultRegistryModule()).getInstance(Registry.class);
+        
+        final SetAsset unit = new SetAsset(ds, as, registry);
         
         final IpcCall call = EasyMock.createMock("call", IpcCall.class);
         final IpcArguments arguments = EasyMock.createMock("arguments", IpcArguments.class);

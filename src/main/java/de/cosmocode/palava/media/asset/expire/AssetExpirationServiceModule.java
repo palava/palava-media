@@ -14,36 +14,27 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  */
 
-package de.cosmcode.palava.media;
+package de.cosmocode.palava.media.asset.expire;
 
-import java.util.List;
-
-import com.google.common.collect.ImmutableList;
-
-import de.cosmocode.palava.media.DirectoryBase;
-import de.cosmocode.palava.model.base.AbstractEntity;
+import com.google.inject.Binder;
+import com.google.inject.Module;
+import com.google.inject.Singleton;
 
 /**
- * Dummy implementation of the {@link DirectoryBase} interface
- * which is used to check "compilability".
+ * Binds {@link AssetExpirationService} as {@link Singleton}.
  *
  * @since 2.0
  * @author Willi Schoenborn
  */
-public class ConcreteDirectory extends AbstractEntity implements DirectoryBase {
+public final class AssetExpirationServiceModule implements Module {
 
     @Override
-    public long getId() {
-        return 0;
+    public void configure(Binder binder) {
+        binder.bind(AssetExpirationService.class).in(Singleton.class);
     }
-    
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<ConcreteAsset> getAssets() {
-        return ImmutableList.of();
-    }
-    
+
 }

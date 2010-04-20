@@ -18,28 +18,35 @@
  * MA  02110-1301, USA.
  */
 
-package de.cosmocode.palava.media.asset;
+package de.cosmocode.palava.media.asset.expire;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.Map;
 
-import com.google.inject.BindingAnnotation;
+import com.google.common.base.Preconditions;
+import com.google.inject.Inject;
 
-import de.cosmocode.palava.store.Store;
+import de.cosmocode.palava.ipc.IpcCall;
+import de.cosmocode.palava.ipc.IpcCommand;
+import de.cosmocode.palava.ipc.IpcCommandExecutionException;
 
 /**
- * Binding annotation for the {@link Store} used by {@link AbstractAssetService}.
+ * Executes {@link AssetExpirationService} which checks for expired assets.
  *
  * @since 2.0
  * @author Willi Schoenborn
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({
-    ElementType.METHOD, ElementType.PARAMETER
-})
-@BindingAnnotation
-public @interface AssetStore {
+public final class Check implements IpcCommand {
+
+    private final AssetExpirationService service;
+    
+    @Inject
+    public Check(AssetExpirationService service) {
+        this.service = Preconditions.checkNotNull(service, "Service");
+    }
+
+    @Override
+    public void execute(IpcCall call, Map<String, Object> result) throws IpcCommandExecutionException {
+        service.execute();
+    }
 
 }

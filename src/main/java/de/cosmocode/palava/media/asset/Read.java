@@ -45,6 +45,7 @@ import de.cosmocode.palava.media.MediaPermissions;
 /**
  * See below.
  *
+ * @since 2.0
  * @author Willi Schoenborn
  */
 @Description("Reads an asset from the database")
