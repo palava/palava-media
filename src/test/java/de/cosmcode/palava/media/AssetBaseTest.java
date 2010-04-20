@@ -119,7 +119,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     @Test
     public void isExpiringExpiredNull() {
         final AssetBase unit = unit();
-        unit.setExpired();
+        unit.setExpired(true);
         Assert.assertTrue(unit.isExpired());
         unit.setExpiresAt(null);
         Assert.assertFalse(unit.isExpiring());
@@ -131,7 +131,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     @Test
     public void isExpiringExpiredFuture() {
         final AssetBase unit = unit();
-        unit.setExpired();
+        unit.setExpired(true);
         Assert.assertTrue(unit.isExpired());
         unit.setExpiresAt(future());
         Assert.assertFalse(unit.isExpiring());
@@ -143,7 +143,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     @Test
     public void isExpiringExpiredPast() {
         final AssetBase unit = unit();
-        unit.setExpired();
+        unit.setExpired(true);
         Assert.assertTrue(unit.isExpired());
         unit.setExpiresAt(past());
         Assert.assertFalse(unit.isExpiring());
@@ -155,6 +155,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     @Test
     public void isExpiringNotExpiredNull() {
         final AssetBase unit = unit();
+        unit.setExpired(false);
         Assert.assertFalse(unit.isExpired());
         unit.setExpiresAt(null);
         Assert.assertFalse(unit.isExpiring());
@@ -166,6 +167,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     @Test
     public void isExpiringNotExpiredFuture() {
         final AssetBase unit = unit();
+        unit.setExpired(false);
         Assert.assertFalse(unit.isExpired());
         unit.setExpiresAt(future());
         Assert.assertFalse(unit.isExpiring());
@@ -177,6 +179,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     @Test
     public void isExpiringNotExpiredPast() {
         final AssetBase unit = unit();
+        unit.setExpired(false);
         Assert.assertFalse(unit.isExpired());
         unit.setExpiresAt(past());
         Assert.assertTrue(unit.isExpiring());
@@ -189,7 +192,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     public void setExpired() {
         final AssetBase unit = unit();
         Assert.assertFalse(unit.isExpired());
-        unit.setExpired();
+        unit.setExpired(true);
         Assert.assertTrue(unit.isExpired());
     }
     
@@ -199,7 +202,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     @Test
     public void isUnexpiringExpiredNull() {
         final AssetBase unit = unit();
-        unit.setExpired();
+        unit.setExpired(true);
         Assert.assertTrue(unit.isExpired());
         unit.setExpiresAt(null);
         Assert.assertTrue(unit.isUnexpiring());
@@ -211,7 +214,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     @Test
     public void isUnexpiringExpiredFuture() {
         final AssetBase unit = unit();
-        unit.setExpired();
+        unit.setExpired(true);
         Assert.assertTrue(unit.isExpired());
         unit.setExpiresAt(future());
         Assert.assertTrue(unit.isUnexpiring());
@@ -223,7 +226,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     @Test
     public void isUnexpiringExpiredPast() {
         final AssetBase unit = unit();
-        unit.setExpired();
+        unit.setExpired(true);
         Assert.assertTrue(unit.isExpired());
         unit.setExpiresAt(past());
         Assert.assertFalse(unit.isUnexpiring());
@@ -235,6 +238,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     @Test
     public void isUnexpiringNotExpiredNull() {
         final AssetBase unit = unit();
+        unit.setExpired(false);
         Assert.assertFalse(unit.isExpired());
         unit.setExpiresAt(null);
         Assert.assertFalse(unit.isUnexpiring());
@@ -246,6 +250,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     @Test
     public void isUnexpiringNotExpiredFuture() {
         final AssetBase unit = unit();
+        unit.setExpired(false);
         Assert.assertFalse(unit.isExpired());
         unit.setExpiresAt(future());
         Assert.assertFalse(unit.isUnexpiring());
@@ -257,6 +262,7 @@ public abstract class AssetBaseTest implements UnitProvider<AssetBase> {
     @Test
     public void isUnexpiringNotExpiredPast() {
         final AssetBase unit = unit();
+        unit.setExpired(false);
         Assert.assertFalse(unit.isExpired());
         unit.setExpiresAt(past());
         Assert.assertFalse(unit.isUnexpiring());

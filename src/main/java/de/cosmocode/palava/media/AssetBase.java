@@ -272,9 +272,11 @@ public interface AssetBase extends EntityBase {
     boolean isExpiring();
     
     /**
-     * Sets the expiration status to true.
+     * Sets the expiration status to the specified value.
+     * 
+     * @param expired the new expired state
      */
-    void setExpired();
+    void setExpired(boolean expired);
     
     /**
      * Provides the epxired status of this asset.

@@ -147,8 +147,8 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
     }
     
     @Override
-    public void setExpired() {
-        this.expired = true;
+    public void setExpired(boolean expired) {
+        this.expired = expired;
     }
     
     @Override
