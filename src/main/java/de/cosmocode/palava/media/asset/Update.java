@@ -136,9 +136,7 @@ public final class Update implements IpcCommand {
             }
         }
 
-        // TODO add expired
         asset.setExpiresAt(expiresAt);
-        // TODO fire unexpiredEvent if appropriate
 
         service.update(asset);
         
