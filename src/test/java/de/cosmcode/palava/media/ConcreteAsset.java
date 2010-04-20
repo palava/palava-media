@@ -25,8 +25,8 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.internal.Maps;
 
-import de.cosmocode.palava.media.AbstractAsset;
-import de.cosmocode.palava.media.AssetBase;
+import de.cosmocode.palava.media.asset.AbstractAsset;
+import de.cosmocode.palava.media.asset.AssetBase;
 
 /**
  * Dummy implementation of the {@link AssetBase} interface

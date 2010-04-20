@@ -27,7 +27,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.cosmocode.junit.UnitProvider;
-import de.cosmocode.palava.media.AssetBase;
+import de.cosmocode.palava.media.asset.AssetBase;
 
 /**
  * Abstract test for {@link AssetBase}s.

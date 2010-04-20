@@ -23,7 +23,7 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
-import de.cosmocode.palava.media.DirectoryBase;
+import de.cosmocode.palava.media.directory.DirectoryBase;
 import de.cosmocode.palava.model.base.AbstractEntity;
 
 /**

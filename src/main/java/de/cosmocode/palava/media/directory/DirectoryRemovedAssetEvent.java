@@ -20,8 +20,7 @@
 
 package de.cosmocode.palava.media.directory;
 
-import de.cosmocode.palava.media.AssetBase;
-import de.cosmocode.palava.media.DirectoryBase;
+import de.cosmocode.palava.media.asset.AssetBase;
 
 /**
  * Event interface for post directory removed asset.

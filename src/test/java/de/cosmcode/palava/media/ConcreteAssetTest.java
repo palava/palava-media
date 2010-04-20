@@ -20,7 +20,7 @@
 
 package de.cosmcode.palava.media;
 
-import de.cosmocode.palava.media.AssetBase;
+import de.cosmocode.palava.media.asset.AssetBase;
 
 /**
  * Tests {@link ConcreteAsset}.

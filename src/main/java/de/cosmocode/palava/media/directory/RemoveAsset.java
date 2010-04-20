@@ -40,9 +40,8 @@ import de.cosmocode.palava.ipc.IpcCommand.Param;
 import de.cosmocode.palava.ipc.IpcCommand.Params;
 import de.cosmocode.palava.ipc.IpcCommand.Throw;
 import de.cosmocode.palava.jpa.Transactional;
-import de.cosmocode.palava.media.AssetBase;
-import de.cosmocode.palava.media.DirectoryBase;
 import de.cosmocode.palava.media.MediaPermissions;
+import de.cosmocode.palava.media.asset.AssetBase;
 import de.cosmocode.palava.media.asset.AssetConstants;
 
 /**

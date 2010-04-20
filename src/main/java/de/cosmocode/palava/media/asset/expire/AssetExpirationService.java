@@ -38,7 +38,7 @@ import de.cosmocode.palava.core.lifecycle.Initializable;
 import de.cosmocode.palava.core.lifecycle.LifecycleException;
 import de.cosmocode.palava.entity.EntityService;
 import de.cosmocode.palava.jpa.Transactional;
-import de.cosmocode.palava.media.AssetBase;
+import de.cosmocode.palava.media.asset.AssetBase;
 import de.cosmocode.palava.media.asset.AssetExpiredEvent;
 import de.cosmocode.palava.media.asset.AssetUnexpiredEvent;
 

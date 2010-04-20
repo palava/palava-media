@@ -20,7 +20,6 @@
 
 package de.cosmocode.palava.media.directory;
 
-import de.cosmocode.palava.media.DirectoryBase;
 
 /**
  * Constants for {@link DirectoryBase} commands.

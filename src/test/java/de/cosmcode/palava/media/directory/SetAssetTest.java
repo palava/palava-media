@@ -37,9 +37,9 @@ import de.cosmocode.palava.entity.EntityService;
 import de.cosmocode.palava.ipc.IpcArguments;
 import de.cosmocode.palava.ipc.IpcCall;
 import de.cosmocode.palava.ipc.IpcCommandExecutionException;
-import de.cosmocode.palava.media.AssetBase;
-import de.cosmocode.palava.media.DirectoryBase;
+import de.cosmocode.palava.media.asset.AssetBase;
 import de.cosmocode.palava.media.asset.AssetConstants;
+import de.cosmocode.palava.media.directory.DirectoryBase;
 import de.cosmocode.palava.media.directory.DirectoryConstants;
 import de.cosmocode.palava.media.directory.SetAsset;
 

@@ -20,7 +20,6 @@
 
 package de.cosmocode.palava.media.asset;
 
-import de.cosmocode.palava.media.AssetBase;
 
 /**
  * Event interface for asset unexpired.

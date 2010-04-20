@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package de.cosmocode.palava.media;
+package de.cosmocode.palava.media.asset;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -30,6 +30,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Ordering;
 
 import de.cosmocode.commons.TrimMode;
+import de.cosmocode.palava.media.directory.DirectoryBase;
 import de.cosmocode.palava.model.base.EntityBase;
 import de.cosmocode.palava.store.Store;
 

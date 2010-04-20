@@ -17,11 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package de.cosmocode.palava.media;
+package de.cosmocode.palava.media.directory;
 
 import java.util.List;
 
 import de.cosmocode.json.JSONMapable;
+import de.cosmocode.palava.media.asset.AssetBase;
 import de.cosmocode.palava.model.base.EntityBase;
 
 /**

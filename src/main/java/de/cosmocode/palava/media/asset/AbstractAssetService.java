@@ -36,7 +36,6 @@ import de.cosmocode.palava.core.lifecycle.Disposable;
 import de.cosmocode.palava.entity.AbstractEntityService;
 import de.cosmocode.palava.entity.EntityService;
 import de.cosmocode.palava.jpa.Transactional;
-import de.cosmocode.palava.media.AssetBase;
 import de.cosmocode.palava.store.Store;
 
 /**
