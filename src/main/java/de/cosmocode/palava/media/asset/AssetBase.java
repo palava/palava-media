@@ -53,7 +53,7 @@ import de.cosmocode.palava.store.Store;
  *     <li>
  *       <h2>Expired</h2>
  *       An expires asset has been marked as expired by using 
- *       {@link AssetBase#setExpired()}. This does not require 
+ *       {@link AssetBase#setExpired(boolean)}. This does not require 
  *       expiresAt to be set.
  *     </li>
  *     <li>
