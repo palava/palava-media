@@ -59,7 +59,6 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
     private String title;
 
     @Lob
-    @Column(columnDefinition = "clob")
     private String description;
 
     @Column(name = "expires_at")
