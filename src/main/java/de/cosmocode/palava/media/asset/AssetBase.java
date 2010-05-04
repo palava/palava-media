@@ -171,6 +171,15 @@ public interface AssetBase extends EntityBase {
     void setStream(InputStream stream);
     
     /**
+     * Checks whether this asset has it's stream
+     * property set.
+     * 
+     * @since 2.0
+     * @return true if this asset has a stream, false otherwise
+     */
+    boolean hasStream();
+    
+    /**
      * Provides the store identifier of this asset.
      * This identifier represents the binary data in the
      * corresponding {@link Store}.

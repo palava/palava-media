@@ -46,8 +46,8 @@ import de.cosmocode.palava.store.Store;
  * @author Willi Schoenborn
  * @param <T> the generic asset type
  */
-public abstract class AbstractAssetService<T extends AssetBase> extends AbstractEntityService<T> 
-    implements Disposable {
+public abstract class AbstractAssetService<T extends AssetBase> extends AbstractEntityService<T>
+    implements AssetBaseService<T>, Disposable {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractAssetService.class);
 
@@ -107,6 +107,21 @@ public abstract class AbstractAssetService<T extends AssetBase> extends Abstract
             }
             throw e;
         }
+    };
+    
+    @Override
+    public void readStream(T asset) throws PersistenceException {
+        Preconditions.checkNotNull(asset, "Asset");
+        if (asset.hasStream()) return;
+        final InputStream stream;
+        
+        try {
+            stream = getStore().read(asset.getStoreIdentifier());
+        } catch (IOException e) {
+            throw new PersistenceException(e);
+        }
+        
+        asset.setStream(stream);
     };
     
     @Override

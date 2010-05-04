@@ -77,6 +77,11 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
         this.stream = stream;
     }
     
+    @Override
+    public boolean hasStream() {
+        return stream != null;
+    }
+    
     @PrePersist
     @Override
     public void setCreated() {
