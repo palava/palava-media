@@ -59,8 +59,8 @@
       </dependency>
       <dependency>
         <groupId>de.cosmocode</groupId>
-        <artifactId>cosmocode-json</artifactId>
-        <version>[1.0.6,2)</version>
+        <artifactId>cosmocode-rendering</artifactId>
+        <version>[1.0-SNAPSHOT,2)</version>
       </dependency>
       <dependency>
         <groupId>javax.persistence</groupId>

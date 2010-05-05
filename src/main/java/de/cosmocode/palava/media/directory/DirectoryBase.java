@@ -21,7 +21,6 @@ package de.cosmocode.palava.media.directory;
 
 import java.util.List;
 
-import de.cosmocode.json.JSONMapable;
 import de.cosmocode.palava.media.asset.AssetBase;
 import de.cosmocode.palava.model.base.EntityBase;
 
@@ -31,7 +30,7 @@ import de.cosmocode.palava.model.base.EntityBase;
  * @since 2.0
  * @author Willi Schoenborn
  */
-public interface DirectoryBase extends EntityBase, JSONMapable {
+public interface DirectoryBase extends EntityBase {
 
     /**
      * Returns an ordered list of all assets in this directory.

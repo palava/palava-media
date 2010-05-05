@@ -25,6 +25,9 @@ import com.google.common.collect.ImmutableList;
 
 import de.cosmocode.palava.media.directory.DirectoryBase;
 import de.cosmocode.palava.model.base.AbstractEntity;
+import de.cosmocode.rendering.Renderer;
+import de.cosmocode.rendering.RenderingException;
+import de.cosmocode.rendering.RenderingLevel;
 
 /**
  * Dummy implementation of the {@link DirectoryBase} interface
@@ -44,6 +47,11 @@ public class ConcreteDirectory extends AbstractEntity implements DirectoryBase {
     @SuppressWarnings("unchecked")
     public List<ConcreteAsset> getAssets() {
         return ImmutableList.of();
+    }
+    
+    @Override
+    public void render(Renderer renderer, RenderingLevel level) throws RenderingException {
+        
     }
     
 }

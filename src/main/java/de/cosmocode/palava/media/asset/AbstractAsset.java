@@ -35,8 +35,6 @@ import org.apache.commons.lang.StringUtils;
 import com.google.common.base.Preconditions;
 
 import de.cosmocode.commons.TrimMode;
-import de.cosmocode.json.JSONRenderer;
-import de.cosmocode.json.RenderLevel;
 import de.cosmocode.palava.model.base.AbstractEntity;
 
 /**
@@ -165,30 +163,4 @@ public abstract class AbstractAsset extends AbstractEntity implements AssetBase 
         return isExpired() && (!isExpirable() || (isExpirable() && getExpiresAt().after(new Date())));
     }
     
-    @Override
-    public JSONRenderer renderAsMap(JSONRenderer renderer) {
-        super.renderAsMap(renderer);
-
-        if (renderer.eq(RenderLevel.TINY)) {
-            renderer.
-                key("name").value(getName()).
-                key("title").value(getTitle());
-        }
-        if (renderer.eq(RenderLevel.MEDIUM)) {
-            renderer.
-                key("description").value(getDescription()).
-                key("expiresAt").value(getExpiresAt()).
-                key("isExpirable").value(isExpirable()).
-                key("isExpiring").value(isExpiring()).
-                key("isExpired").value(isExpired()).
-                key("isUnexpiring").value(isUnexpiring());
-        }
-        if (renderer.eq(RenderLevel.LONG)) {
-            renderer.
-                key("metaData").object(getMetaData());
-        }
-
-        return renderer;
-    }
-
 }

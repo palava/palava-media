@@ -27,6 +27,9 @@ import com.google.inject.internal.Maps;
 
 import de.cosmocode.palava.media.asset.AbstractAsset;
 import de.cosmocode.palava.media.asset.AssetBase;
+import de.cosmocode.rendering.Renderer;
+import de.cosmocode.rendering.RenderingException;
+import de.cosmocode.rendering.RenderingLevel;
 
 /**
  * Dummy implementation of the {@link AssetBase} interface
@@ -53,4 +56,9 @@ public final class ConcreteAsset extends AbstractAsset {
         return Maps.newHashMap();
     }
 
+    @Override
+    public void render(Renderer renderer, RenderingLevel level) throws RenderingException {
+        
+    }
+    
 }
