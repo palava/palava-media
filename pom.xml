@@ -103,6 +103,7 @@
         <groupId>de.cosmocode</groupId>
         <artifactId>cosmocode-junit</artifactId>
         <version>[1.2,2)</version>
+        <scope>test</scope>
       </dependency>
   </dependencies>
 </project>
