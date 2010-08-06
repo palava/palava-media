@@ -30,11 +30,11 @@ import de.cosmocode.palava.entity.EntityService;
 import de.cosmocode.palava.ipc.IpcArguments;
 import de.cosmocode.palava.ipc.IpcCall;
 import de.cosmocode.palava.ipc.IpcCommand;
-import de.cosmocode.palava.ipc.IpcCommandExecutionException;
 import de.cosmocode.palava.ipc.IpcCommand.Description;
 import de.cosmocode.palava.ipc.IpcCommand.Param;
 import de.cosmocode.palava.ipc.IpcCommand.Return;
 import de.cosmocode.palava.ipc.IpcCommand.Throw;
+import de.cosmocode.palava.ipc.IpcCommandExecutionException;
 import de.cosmocode.palava.jpa.Transactional;
 import de.cosmocode.palava.media.MediaPermissions;
 
