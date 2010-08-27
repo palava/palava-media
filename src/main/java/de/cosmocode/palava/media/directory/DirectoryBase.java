@@ -32,9 +32,8 @@ public interface DirectoryBase extends EntityBase {
     /**
      * Returns an ordered list of all assets in this directory.
      * 
-     * @param <A> generic asset type
      * @return a list of all assets
      */
-    <A extends AssetBase> List<A> getAssets();
+    List<? extends AssetBase> getAssets();
     
 }

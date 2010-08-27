@@ -98,7 +98,8 @@ public final class AddAsset implements IpcCommand {
         
         addAssetEvent.eventDirectoryAddAsset(directory, asset);
         
-        final List<AssetBase> assets = directory.getAssets();
+        @SuppressWarnings("unchecked")
+        final List<AssetBase> assets = (List<AssetBase>) directory.getAssets();
         
         final int currentIndex;
         

@@ -103,7 +103,8 @@ public final class SetAsset implements IpcCommand {
         final DirectoryBase directory = directoryService.read(directoryId);
         final AssetBase asset = assetService.reference(assetId);
         
-        final List<AssetBase> assets = directory.getAssets();
+        @SuppressWarnings("unchecked")
+        final List<AssetBase> assets = (List<AssetBase>) directory.getAssets();
         Preconditions.checkState(assets.contains(asset), "%s is not contained in %s", asset, directory);
         
         LOG.trace("Setting index of {} in {} to {}", new Object[] {

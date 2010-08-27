@@ -235,10 +235,9 @@ public interface AssetBase extends EntityBase {
     /**
      * Provides all directories this asset is contained in.
      * 
-     * @param <D> generic directory type
      * @return a set of all directories containing this asset
      */
-    <D extends DirectoryBase> Set<D> getDirectories();
+    Set<? extends DirectoryBase> getDirectories();
 
     /**
      * Provides the expiration date of this asset.

@@ -79,7 +79,9 @@ public final class SetAssetTest {
         Assert.assertEquals(mocks.size() + 1, assets.size());
         
         final DirectoryBase directory = EasyMock.createMock("directory", DirectoryBase.class);
-        EasyMock.expect(directory.getAssets()).andReturn(assets);
+        @SuppressWarnings("unchecked")
+        final List<AssetBase> casted = (List<AssetBase>) directory.getAssets();
+        EasyMock.expect(casted).andReturn(assets);
         
         @SuppressWarnings("unchecked")
         final EntityService<DirectoryBase> ds = EasyMock.createMock("ds", EntityService.class);

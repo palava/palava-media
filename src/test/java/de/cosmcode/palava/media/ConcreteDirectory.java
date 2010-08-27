@@ -41,7 +41,6 @@ public class ConcreteDirectory extends AbstractEntity implements DirectoryBase {
     }
     
     @Override
-    @SuppressWarnings("unchecked")
     public List<ConcreteAsset> getAssets() {
         return ImmutableList.of();
     }
