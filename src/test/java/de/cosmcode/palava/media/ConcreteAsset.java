@@ -43,7 +43,6 @@ public final class ConcreteAsset extends AbstractAsset {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Set<ConcreteDirectory> getDirectories() {
         return ImmutableSet.of();
     }
