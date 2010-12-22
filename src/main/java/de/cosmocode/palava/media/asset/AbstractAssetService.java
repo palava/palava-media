@@ -103,7 +103,7 @@ public abstract class AbstractAssetService<T extends AssetBase> extends Abstract
             }
             throw e;
         }
-    };
+    }
     
     @Override
     public void readStream(T asset) throws PersistenceException {
@@ -118,7 +118,7 @@ public abstract class AbstractAssetService<T extends AssetBase> extends Abstract
         }
         
         asset.setStream(stream);
-    };
+    }
     
     @Override
     public T update(T entity) {
@@ -126,6 +126,6 @@ public abstract class AbstractAssetService<T extends AssetBase> extends Abstract
         final T returnValue = super.update(entity);
         updatedEvent.eventAssetUpdated(entity);
         return returnValue;
-    };
+    }
 
 }
